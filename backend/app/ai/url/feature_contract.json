@@ -1,0 +1,68 @@
+{
+  "model_name": "SecureSense URL Phishing Intelligence",
+  "version": "1.0",
+  "task": "binary_phishing_url_classification",
+  "labels": {
+    "0": "Legitimate",
+    "1": "Phishing"
+  },
+  "features": [
+    "entropy",
+    "url_length",
+    "num_www",
+    "ratio_digits_url",
+    "num_subdomains",
+    "length_hostname",
+    "num_dots",
+    "num_hyphens",
+    "ratio_digits_host",
+    "prefix_suffix",
+    "num_question_mark",
+    "num_eq",
+    "domain_age",
+    "dns_resolvable",
+    "num_ips",
+    "ttl",
+    "num_name_servers"
+  ],
+  "lexical_features": [
+    "entropy",
+    "url_length",
+    "num_www",
+    "ratio_digits_url",
+    "num_subdomains",
+    "length_hostname",
+    "num_dots",
+    "num_hyphens",
+    "ratio_digits_host",
+    "prefix_suffix",
+    "num_question_mark",
+    "num_eq"
+  ],
+  "network_features": [
+    "domain_age",
+    "dns_resolvable",
+    "num_ips",
+    "ttl",
+    "num_name_servers"
+  ],
+  "removed_features": [
+    "random_domain"
+  ],
+  "network_semantics": {
+    "domain_age": "-1 when registration age is unavailable",
+    "dns_resolvable": "1 when DNS resolves, otherwise 0",
+    "num_ips": "number of resolved IP addresses; 0 when unresolved",
+    "ttl": "DNS TTL; -1 when DNS is unresolved",
+    "num_name_servers": "number of discovered name servers; may be 0 even when DNS resolves"
+  },
+  "validation_metrics": {
+    "accuracy": 0.9936347315162396,
+    "balanced_accuracy": 0.9939313042396509,
+    "precision": 0.9984591679506933,
+    "recall": 0.9896151496640195,
+    "f1": 0.9940174873446848,
+    "roc_auc": 0.9993852723590317,
+    "mcc": 0.9872620241771622
+  }
+}

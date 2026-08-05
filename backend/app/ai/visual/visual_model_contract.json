@@ -1,0 +1,77 @@
+{
+  "module": "Visual Phishing Intelligence",
+  "version": "1.0.0",
+  "status": "FROZEN_PRODUCTION_MODEL",
+  "task": "binary_visual_phishing_classification",
+  "architecture": "ConvNeXt-Tiny",
+  "model_file": "visual_phishing_convnext_tiny.pth",
+  "model_sha256": "16f93db0255b5743afa6dff6747b98bf35b2399ff455dedd77f30e9f2d476ea1",
+  "training_checkpoint_epoch": 16,
+  "input": {
+    "type": "website_screenshot",
+    "width": 224,
+    "height": 224,
+    "channels": 3,
+    "colour_mode": "RGB",
+    "resize": "224x224",
+    "tensor_conversion": "torchvision.transforms.ToTensor",
+    "normalization": {
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    }
+  },
+  "output": {
+    "classes": {
+      "0": "Legitimate",
+      "1": "Phishing"
+    },
+    "positive_class": 1,
+    "positive_label": "Phishing",
+    "probability": "softmax_class_1",
+    "decision_threshold": 0.5549999999999995,
+    "decision_rule": "phishing_probability >= decision_threshold"
+  },
+  "validation": {
+    "threshold_selection": "maximum_validation_mcc",
+    "selected_threshold": 0.5549999999999995,
+    "validation_mcc": 0.7081433152157985,
+    "validation_f1": 0.7294117647058823,
+    "validation_recall": 0.6888888888888889,
+    "validation_pr_auc": 0.6587825424940384
+  },
+  "final_test": {
+    "samples": 547,
+    "legitimate": 502,
+    "phishing": 45,
+    "accuracy": 0.9561243144424132,
+    "balanced_accuracy": 0.8142540947321824,
+    "precision": 0.7837837837837838,
+    "recall": 0.6444444444444445,
+    "specificity": 0.9840637450199203,
+    "f1": 0.7073170731707317,
+    "mcc": 0.6876747944299538,
+    "roc_auc": 0.9510624169986719,
+    "pr_auc": 0.8025452217518241,
+    "confusion_matrix": {
+      "tn": 494,
+      "fp": 8,
+      "fn": 16,
+      "tp": 29
+    }
+  },
+  "evaluation_policy": {
+    "checkpoint_selected_using": "validation",
+    "threshold_selected_using": "validation",
+    "test_used_for_model_selection": false,
+    "test_used_for_threshold_selection": false,
+    "post_test_tuning_allowed": false
+  }
+}

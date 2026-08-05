@@ -1,0 +1,12 @@
+{
+    "id2label": {
+        "0": "Legitimate",
+        "1": "Spam",
+        "2": "Phishing"
+    },
+    "label2id": {
+        "Legitimate": 0,
+        "Spam": 1,
+        "Phishing": 2
+    }
+}
