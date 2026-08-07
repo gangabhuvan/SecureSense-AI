@@ -550,25 +550,6 @@ The FCP transforms complex AI outputs into a standardized trust profile suitable
 
 ---
 
-# 🔄 Investigation Workflow
-
-Every investigation follows a consistent evidence-driven pipeline.
-
-| Step | Investigation Stage |
-|------|----------------------|
-| 1 | Communication Ingestion |
-| 2 | Communication Selection |
-| 3 | Optical Content Extraction |
-| 4 | Multi-Modal Intelligence Analysis |
-| 5 | Trust Verification |
-| 6 | Trust Intelligence Fusion |
-| 7 | Securities Trust Graph Analysis |
-| 8 | Financial Communication Passport Generation |
-| 9 | Explainable Evidence Ledger Recording |
-| 10 | Unified Investigation Dashboard |
-
----
-
 # 🔍 Explainable Artificial Intelligence
 
 Explainability is a core design principle of SecureSense AI.
@@ -980,21 +961,3 @@ Special thanks to the open-source community and the developers of:
 whose tools and research have enabled rapid innovation in trustworthy AI systems.
 
 ---
-
-<div align="center">
-
-<img src="frontend/public/favicon.svg" alt="SecureSense AI Logo" width="90">
-
-# SecureSense AI
-
-### Multi-Modal Explainable Trust Intelligence Platform
-
-### **Investigate Financial Communications Before You Trust Them.**
-
----
-
-**Building trustworthy AI for secure financial communication investigations.**
-
-⭐ If you found this project interesting, consider giving it a star!
-
-</div>
