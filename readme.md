@@ -216,45 +216,56 @@ Instead of reading multiple reports, investigators receive a single standardized
 
 # 🏗️ High-Level Architecture
 
-```text
-                              SecureSense AI
+```mermaid
+flowchart TD
+    A[SecureSense AI]
+    B[Communication Investigation]
+    C[Multi-Modal Intelligence Layer]
 
-                     Communication Investigation
+    D[NLP]
+    E[URL]
+    F[Visual]
+    G[Voice]
+    H[OCR]
+    I[QR]
+    J[Communication Intent Intelligence (CII)]
 
-                                  │
-                                  ▼
+    K[Trust Verification Engine (TVE)]
+    L[Trust Intelligence Engine (TIE)]
 
-                  Multi-Modal Intelligence Layer
+    M[Securities Trust Graph (STG)]
+    N[Financial Communication Passport (FCP)]
 
-         ┌───────────────────────────────────────────────┐
-         │ NLP │ URL │ Visual │ Voice │ OCR │ QR │ CII │
-         └───────────────────────────────────────────────┘
+    O[Explainable Evidence Ledger (EEL)]
+    P[Unified Security Investigation]
 
-                                  │
-                                  ▼
+    A --> B
+    B --> C
 
-                Trust Verification Engine (TVE)
+    C --> D
+    C --> E
+    C --> F
+    C --> G
+    C --> H
+    C --> I
+    C --> J
 
-                                  │
-                                  ▼
+    D --> K
+    E --> K
+    F --> K
+    G --> K
+    H --> K
+    I --> K
+    J --> K
 
-                Trust Intelligence Engine (TIE)
+    K --> L
+    L --> M
+    L --> N
 
-                                  │
-               ┌──────────────────┴──────────────────┐
-               ▼                                     ▼
+    M --> O
+    N --> O
 
-     Securities Trust Graph (STG)    Financial Communication Passport (FCP)
-
-               └──────────────────┬──────────────────┘
-                                  ▼
-
-             Explainable Evidence Ledger (EEL)
-
-                                  │
-                                  ▼
-
-               Unified Security Investigation
+    O --> P
 ```
 
 ---
@@ -263,35 +274,34 @@ Instead of reading multiple reports, investigators receive a single standardized
 
 Every investigation follows the same explainable workflow.
 
-```
-Communication
-        │
-        ▼
-Communication Selection
-        │
-        ▼
-Optical Content Extraction (OCE)
-        │
-        ▼
-Multi-Modal Intelligence
-        │
-        ▼
-Trust Verification
-        │
-        ▼
-Trust Intelligence Engine
-        │
-        ▼
-Evidence Fusion
-        │
-        ▼
-Financial Communication Passport
-        │
-        ▼
-Explainable Evidence Ledger
-        │
-        ▼
-Unified Investigation Dashboard
+```mermaid
+flowchart TD
+    A[Financial Communication]
+    B[Communication Ingestion]
+    C[Communication Selection]
+    D[Optical Content Extraction (OCE)]
+    E[Multi-Modal Intelligence Layer]
+    F[Trust Verification Engine (TVE)]
+    G[Trust Intelligence Engine (TIE)]
+    H[Securities Trust Graph (STG)]
+    I[Financial Communication Passport (FCP)]
+    J[Explainable Evidence Ledger (EEL)]
+    K[Unified Trust Dashboard]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+
+    G --> H
+    G --> I
+
+    H --> J
+    I --> J
+
+    J --> K
 ```
 
 ---
