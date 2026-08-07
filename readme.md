@@ -218,26 +218,26 @@ Instead of reading multiple reports, investigators receive a single standardized
 
 ```mermaid
 flowchart TD
-    A[SecureSense AI]
-    B[Communication Investigation]
-    C[Multi-Modal Intelligence Layer]
+    A["SecureSense AI"]
+    B["Communication Investigation"]
+    C["Multi-Modal Intelligence Layer"]
 
-    D[NLP]
-    E[URL]
-    F[Visual]
-    G[Voice]
-    H[OCR]
-    I[QR]
-    J[Communication Intent Intelligence (CII)]
+    D["NLP"]
+    E["URL"]
+    F["Visual"]
+    G["Voice"]
+    H["OCR"]
+    I["QR"]
+    J["Communication Intent Intelligence - CII"]
 
-    K[Trust Verification Engine (TVE)]
-    L[Trust Intelligence Engine (TIE)]
+    K["Trust Verification Engine - TVE"]
+    L["Trust Intelligence Engine - TIE"]
 
-    M[Securities Trust Graph (STG)]
-    N[Financial Communication Passport (FCP)]
+    M["Securities Trust Graph - STG"]
+    N["Financial Communication Passport - FCP"]
 
-    O[Explainable Evidence Ledger (EEL)]
-    P[Unified Security Investigation]
+    O["Explainable Evidence Ledger - EEL"]
+    P["Unified Security Investigation"]
 
     A --> B
     B --> C
@@ -259,6 +259,7 @@ flowchart TD
     J --> K
 
     K --> L
+
     L --> M
     L --> N
 
@@ -276,17 +277,17 @@ Every investigation follows the same explainable workflow.
 
 ```mermaid
 flowchart TD
-    A[Financial Communication]
-    B[Communication Ingestion]
-    C[Communication Selection]
-    D[Optical Content Extraction (OCE)]
-    E[Multi-Modal Intelligence Layer]
-    F[Trust Verification Engine (TVE)]
-    G[Trust Intelligence Engine (TIE)]
-    H[Securities Trust Graph (STG)]
-    I[Financial Communication Passport (FCP)]
-    J[Explainable Evidence Ledger (EEL)]
-    K[Unified Trust Dashboard]
+    A["Financial Communication"]
+    B["Communication Ingestion"]
+    C["Communication Selection"]
+    D["Optical Content Extraction - OCE"]
+    E["Multi-Modal Intelligence Layer"]
+    F["Trust Verification Engine - TVE"]
+    G["Trust Intelligence Engine - TIE"]
+    H["Securities Trust Graph - STG"]
+    I["Financial Communication Passport - FCP"]
+    J["Explainable Evidence Ledger - EEL"]
+    K["Unified Trust Dashboard"]
 
     A --> B
     B --> C
