@@ -10,7 +10,7 @@
 
 <p align="center">
 
-SecureSense AI is a Multi-Modal Explainable Trust Intelligence Platform that investigates, verifies, and explains the authenticity and security of financial communications across emails, SMS, website URLs, PDFs, QR codes, images, and voice recordings using evidence-driven artificial intelligence.
+SecureSense AI is a Multi-Modal Explainable Trust Intelligence Platform that investigates, verifies, and explains the authenticity of financial communications across emails, SMS, website URLs, PDFs, QR codes, images, and voice recordings using evidence-driven artificial intelligence.
 
 </p>
 
@@ -897,37 +897,10 @@ Every recommendation is based on explainable evidence generated during the inves
 
 # 🔮 Future Enhancements
 
-Future work may include:
+Future development of SecureSense AI may include:
 
-- Real-time email integration
-- Browser extension for instant URL investigation
-- Mobile application
-- Large Language Model assisted investigation summaries
-- Graph Neural Networks for advanced trust reasoning
-- Federated trust intelligence across institutions
-- Blockchain-backed evidence integrity
-- Real-time threat intelligence integration
-- Continuous trust graph learning
-
----
-
-# 👨‍💻 Project Information
-
-**Project**
-
-SecureSense AI
-
-**Category**
-
-Financial Communication Security
-
-**Architecture**
-
-Multi-Modal Explainable Trust Intelligence Platform
-
-**Primary Technologies**
-
-FastAPI • React • PyTorch • XGBoost • SQLAlchemy • Transformers
+- 🎥 Video Intelligence for detecting deepfake videos, manipulated visual content, and video-based financial fraud.
+- 🧠 Graph Neural Network (GNN)-based Trust Intelligence for enhanced relationship reasoning within the Securities Trust Graph (STG).
 
 ---
 
