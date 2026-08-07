@@ -8,7 +8,7 @@
 
 <p align="center">
 
-An AI-powered platform that investigates, verifies, explains, and visualizes the trustworthiness of financial communications using evidence-driven multi-modal intelligence.
+SecureSense AI is a Multi-Modal Explainable Trust Intelligence Platform that investigates, verifies, and explains the authenticity and security of financial communications across emails, SMS, website URLs, PDFs, QR codes, images, and voice recordings using evidence-driven artificial intelligence.
 
 </p>
 
@@ -20,7 +20,6 @@ An AI-powered platform that investigates, verifies, explains, and visualizes the
 ![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?style=for-the-badge&logo=vite)
 ![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?style=for-the-badge&logo=pytorch)
 ![XGBoost](https://img.shields.io/badge/XGBoost-URL%20Intelligence-FF6600?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 ---
 
@@ -318,6 +317,10 @@ Unified Investigation Dashboard
 # 🤖 Artificial Intelligence Models
 
 SecureSense AI integrates multiple specialized AI models, each designed to analyse a different communication modality. Rather than relying on a single prediction, every model contributes explainable evidence that is fused into a unified trust assessment.
+
+> **Repository Note**
+>
+> All pre-trained AI models required by SecureSense AI are included in this repository. No additional model training is required before running the application.
 
 | Intelligence Module | AI Model | Purpose | Explainability |
 |---------------------|----------|---------|----------------|
@@ -655,7 +658,6 @@ SecureSense-AI/
 │   └── vite.config.js
 │
 ├── README.md
-├── LICENSE
 └── .gitignore
 ```
 
@@ -666,7 +668,7 @@ SecureSense-AI/
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/SecureSense-AI.git
+git clone https://github.com/gangabhuvan/SecureSense-AI.git
 cd SecureSense-AI
 ```
 
@@ -704,6 +706,8 @@ Create the environment configuration
 cp .env.example .env
 ```
 
+Open the generated `.env` file and configure the authentication settings before starting the backend.
+
 Run the backend
 
 ```bash
@@ -734,25 +738,6 @@ Frontend URL
 http://localhost:5173
 ```
 
----
-
-## 📷 Screenshots
-
-> Replace the placeholders below with actual screenshots from the application.
-
-| Landing Page | Investigation Dashboard |
-|---------------|-------------------------|
-| `assets/landing.png` | `assets/dashboard.png` |
-
-| Security Investigation | Financial Communication Passport |
-|-------------------------|----------------------------------|
-| `assets/investigation.png` | `assets/passport.png` |
-
-| Securities Trust Graph | Explainable Evidence Ledger |
-|--------------------------|------------------------------|
-| `assets/stg.png` | `assets/eel.png` |
-
----
 # 🌟 What Makes SecureSense AI Different?
 
 SecureSense AI is **not another phishing detector**.
@@ -950,19 +935,11 @@ FastAPI • React • PyTorch • XGBoost • SQLAlchemy • Transformers
 
 # 🤝 Contributors
 
-**Bhuvankumar A P**
+**Bhuvankumar A Patri**
 
 Information Science & Engineering
 
 Nitte Meenakshi Institute of Technology
-
----
-
-# 📜 License
-
-This project is released under the MIT License.
-
-See the **LICENSE** file for additional information.
 
 ---
 
@@ -997,7 +974,7 @@ whose tools and research have enabled rapid innovation in trustworthy AI systems
 
 ---
 
-**Building the next generation of explainable trust intelligence for financial communication security.**
+**Building trustworthy AI for secure financial communication investigations.**
 
 ⭐ If you found this project interesting, consider giving it a star!
 
