@@ -17,17 +17,6 @@ from pathlib import Path
 from time import perf_counter
 from typing import Any
 
-FFMPEG_DIR = (
-    r"C:\Users\ganga\Downloads\ffmpeg-8.1.2-essentials_build"
-    r"\ffmpeg-8.1.2-essentials_build\bin"
-)
-
-os.environ["PATH"] = (
-    FFMPEG_DIR
-    + os.pathsep
-    + os.environ.get("PATH", "")
-)
-
 import torch
 import whisper
 
