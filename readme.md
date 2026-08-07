@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🛡️ SecureSense AI
+<img src="frontend/public/favicon.svg" alt="SecureSense AI Logo" width="90">
+
+# SecureSense AI
 
 ### Multi-Modal Explainable Trust Intelligence Platform
 
@@ -11,15 +13,6 @@
 SecureSense AI is a Multi-Modal Explainable Trust Intelligence Platform that investigates, verifies, and explains the authenticity and security of financial communications across emails, SMS, website URLs, PDFs, QR codes, images, and voice recordings using evidence-driven artificial intelligence.
 
 </p>
-
----
-
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.140-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?style=for-the-badge&logo=vite)
-![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?style=for-the-badge&logo=pytorch)
-![XGBoost](https://img.shields.io/badge/XGBoost-URL%20Intelligence-FF6600?style=for-the-badge)
 
 ---
 
@@ -224,42 +217,44 @@ Instead of reading multiple reports, investigators receive a single standardized
 # 🏗️ High-Level Architecture
 
 ```text
-                           SecureSense AI
+                              SecureSense AI
 
-                    Communication Investigation
+                     Communication Investigation
 
-                               │
-                               ▼
+                                  │
+                                  ▼
 
-                   Multi-Modal Intelligence Layer
-       ┌────────────────────────────────────────────┐
-       │ NLP │ URL │ Visual │ Voice │ OCR │ QR │ CII │
-       └────────────────────────────────────────────┘
-                               │
-                               ▼
+                  Multi-Modal Intelligence Layer
 
-                 Trust Verification Engine (TVE)
+         ┌───────────────────────────────────────────────┐
+         │ NLP │ URL │ Visual │ Voice │ OCR │ QR │ CII │
+         └───────────────────────────────────────────────┘
 
-                               │
-                               ▼
+                                  │
+                                  ▼
 
-                 Trust Intelligence Engine (TIE)
+                Trust Verification Engine (TVE)
 
-                               │
-             ┌─────────────────┴─────────────────┐
-             ▼                                   ▼
+                                  │
+                                  ▼
 
-   Securities Trust Graph (STG)      Financial Communication Passport (FCP)
+                Trust Intelligence Engine (TIE)
 
-             └─────────────────┬─────────────────┘
-                               ▼
+                                  │
+               ┌──────────────────┴──────────────────┐
+               ▼                                     ▼
 
-              Explainable Evidence Ledger (EEL)
+     Securities Trust Graph (STG)    Financial Communication Passport (FCP)
 
-                               │
-                               ▼
+               └──────────────────┬──────────────────┘
+                                  ▼
 
-                 Unified Security Investigation
+             Explainable Evidence Ledger (EEL)
+
+                                  │
+                                  ▼
+
+               Unified Security Investigation
 ```
 
 ---
@@ -587,7 +582,7 @@ This enables users to understand:
 
 ---
 
-# 🛠️ Technology Stack
+# 🛠️ Technology Stack & Frameworks
 
 ### Backend
 
@@ -604,23 +599,34 @@ This enables users to understand:
 - Axios
 - CSS3
 
-### Artificial Intelligence
+### Artificial Intelligence Models
+
+- DistilBERT (NLP Phishing Detection)
+- ConvNeXt-Tiny (Visual Phishing Detection)
+- XGBoost (17-Feature URL Intelligence)
+- Whisper Base (Speech Transcription)
+- Spectra-AASIST3 (AI Voice Deepfake Detection)
+- all-MiniLM-L6-v2 SentenceTransformer (Communication Intent Intelligence)
+
+### Explainable AI
+
+- SHAP (TreeSHAP)
+- Grad-CAM
+- Integrated Gradients
+- Evidence Fusion
+
+### Document & Visual Processing
+
+- EasyOCR
+- PDFPlumber
+- OpenCV
+- Pillow
+
+### Data Science & Machine Learning
 
 - PyTorch
 - Transformers
 - Sentence Transformers
-- XGBoost
-- EasyOCR
-- Whisper
-- SHAP
-- Grad-CAM
-- Integrated Gradients
-
-### Utilities
-
-- OpenCV
-- PDFPlumber
-- Pillow
 - NumPy
 - Pandas
 - Scikit-learn
@@ -966,7 +972,9 @@ whose tools and research have enabled rapid innovation in trustworthy AI systems
 
 <div align="center">
 
-# 🛡️ SecureSense AI
+<img src="frontend/public/favicon.svg" alt="SecureSense AI Logo" width="90">
+
+# SecureSense AI
 
 ### Multi-Modal Explainable Trust Intelligence Platform
 
