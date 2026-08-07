@@ -7,7 +7,94 @@ const api = axios.create({
     },
 });
 
+// ==========================================================
+// JWT Authentication
+// ==========================================================
+
+api.interceptors.request.use(
+    (config) => {
+
+        const token = localStorage.getItem(
+            "access_token"
+        );
+
+        if (token) {
+            config.headers.Authorization =
+                `Bearer ${token}`;
+        }
+
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+
+        if (error.response?.status === 401) {
+
+            localStorage.removeItem(
+                "access_token"
+            );
+
+            window.location.href = "/login";
+        }
+
+        return Promise.reject(error);
+    }
+);
+
 export default api;
+
+// ==========================================================
+// Authentication
+// ==========================================================
+
+export const registerUser = async (userData) => {
+
+    const response = await api.post(
+        "/auth/register",
+        userData
+    );
+
+    return response.data;
+};
+
+export const loginUser = async (credentials) => {
+
+    const response = await api.post(
+        "/auth/login",
+        credentials
+    );
+
+    localStorage.setItem(
+        "access_token",
+        response.data.access_token
+    );
+
+    return response.data;
+};
+
+export const getCurrentUser = async () => {
+
+    const response = await api.get(
+        "/auth/me"
+    );
+
+    return response.data;
+};
+
+export const logoutUser = () => {
+
+    localStorage.removeItem(
+        "access_token"
+    );
+};
+
+// ==========================================================
+// Upload
+// ==========================================================
 
 export const uploadCommunication = async ({
     file = null,
@@ -42,17 +129,27 @@ export const uploadCommunication = async ({
 };
 
 export const getUploadHistory = async () => {
-    const response = await api.get("/upload/history");
-    return response.data;
-};
 
-export const getCommunication = async (communicationId) => {
     const response = await api.get(
-        `/upload/${encodeURIComponent(communicationId)}`
+        "/upload/history"
     );
 
     return response.data;
 };
+
+export const getCommunication = async (
+    communicationId
+) => {
+
+    const response = await api.get(
+        `/upload/${encodeURIComponent(
+            communicationId
+        )}`
+    );
+
+    return response.data;
+};
+
 // ==========================================================
 // Explainable Evidence Ledger
 // ==========================================================
@@ -63,30 +160,36 @@ export const getEvidenceLedger = async ({
     communicationId = null,
     module = null,
 } = {}) => {
+
     const params = {
         skip,
         limit,
     };
 
     if (communicationId) {
-        params.communication_id = communicationId;
+        params.communication_id =
+            communicationId;
     }
 
     if (module) {
         params.module = module;
     }
 
-    const response = await api.get("/ledger", {
-        params,
-    });
+    const response = await api.get(
+        "/ledger",
+        {
+            params,
+        }
+    );
 
     return response.data;
 };
 
-
-export const getCommunicationEvidence = async (
+export const getCommunicationEvidence =
+async (
     communicationId
 ) => {
+
     const response = await api.get(
         `/ledger/communication/${encodeURIComponent(
             communicationId
@@ -96,23 +199,33 @@ export const getCommunicationEvidence = async (
     return response.data;
 };
 
-
-export const getEvidenceByLedgerId = async (
+export const getEvidenceByLedgerId =
+async (
     ledgerId
 ) => {
+
     const response = await api.get(
-        `/ledger/${encodeURIComponent(ledgerId)}`
+        `/ledger/${encodeURIComponent(
+            ledgerId
+        )}`
     );
 
     return response.data;
 };
+
 // ==========================================================
-// Security Investigation Reports
+// Reports
 // ==========================================================
 
-export const downloadSecurityReport = async (communicationId) => {
+export const downloadSecurityReport =
+async (
+    communicationId
+) => {
+
     const response = await api.get(
-        `/reports/${encodeURIComponent(communicationId)}/pdf`,
+        `/reports/${encodeURIComponent(
+            communicationId
+        )}/pdf`,
         {
             responseType: "blob",
         }
@@ -125,11 +238,14 @@ export const downloadSecurityReport = async (communicationId) => {
         }
     );
 
-    const url = window.URL.createObjectURL(blob);
+    const url =
+        window.URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
+    const link =
+        document.createElement("a");
 
     link.href = url;
+
     link.download =
         `SecureSense_AI_Security_Report_${communicationId}.pdf`;
 

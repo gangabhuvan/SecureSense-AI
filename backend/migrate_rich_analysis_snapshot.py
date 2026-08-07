@@ -27,15 +27,10 @@ def main():
             ).fetchall()
         }
 
-        print(
-            "=== RICH ANALYSIS SNAPSHOT MIGRATION ==="
-        )
+
 
         for name, column_type in COLUMNS.items():
             if name in existing_columns:
-                print(
-                    f"{name}: already exists"
-                )
                 continue
 
             cursor.execute(
@@ -43,13 +38,10 @@ def main():
                 f"ADD COLUMN {name} {column_type}"
             )
 
-            print(
-                f"{name}: added"
-            )
 
         connection.commit()
 
-        print("Migration committed successfully.")
+
 
     except Exception:
         connection.rollback()

@@ -42,10 +42,6 @@ class VoiceModelService:
             else "cpu"
         )
 
-        print(
-            f"Loading Whisper on {self.device}..."
-        )
-
         # Hackathon recommendation:
         # base model is a good balance between
         # speed and accuracy.

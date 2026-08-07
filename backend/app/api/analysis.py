@@ -12,8 +12,9 @@ SecureSense analysis pipeline, including DistilBERT NLP,
 rule-based detection, entity extraction, context detection,
 hybrid risk scoring, and Financial Communication Passport.
 """
-
 from __future__ import annotations
+from app.core.auth import get_current_user
+from app.database.models import User
 
 import os
 import time
@@ -143,6 +144,7 @@ async def analyse(
         description="Paste email, SMS, message, or other text.",
     ),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Run the complete SecureSense analysis pipeline.

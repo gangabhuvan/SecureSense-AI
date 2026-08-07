@@ -409,10 +409,7 @@ const statistics = useMemo(() => {
           <h1>Investigation Reports</h1>
 
           <p>
-            Review the latest SecureSense
-            investigations, security classifications,
-            risk intelligence and evidence-backed
-            analysis.
+            Review completed SecureSense investigations, risk classifications, explainable evidence, and downloadable security reports.
           </p>
         </div>
 
@@ -778,7 +775,7 @@ const statistics = useMemo(() => {
                   <th>Investigation</th>
                   <th>Content Category</th>
                   <th>Risk</th>
-                  <th>AI Intelligence</th>
+                  <th>Trust Intelligence</th>
                   <th>Evidence</th>
                   <th>Status</th>
                   <th>Submitted</th>

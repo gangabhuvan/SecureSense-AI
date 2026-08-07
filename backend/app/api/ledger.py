@@ -25,7 +25,11 @@ from fastapi import (
 from sqlalchemy.orm import Session
 
 from app.database.database import get_db
-from app.database.models import EELEntry
+from app.core.auth import get_current_user
+from app.database.models import (
+    EELEntry,
+    User,
+)
 
 
 router = APIRouter(
@@ -88,6 +92,7 @@ def get_ledger_history(
         le=500,
     ),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Return persisted EEL entries.
@@ -155,6 +160,7 @@ def get_ledger_history(
 def get_communication_evidence(
     communication_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Return every durable EEL entry associated with one
@@ -194,6 +200,7 @@ def get_communication_evidence(
 def get_ledger_entry(
     ledger_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Retrieve one complete persisted EEL entry including its

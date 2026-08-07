@@ -397,7 +397,7 @@ export default function Passport() {
           </div>
 
           <h1>
-            Trust & Authenticity Passport
+            Trust & Authenticity Profile
           </h1>
 
           <div className="investigation-meta">
@@ -674,7 +674,7 @@ export default function Passport() {
       <section className="investigation-section">
         <div className="investigation-section-heading">
           <div>
-            <span>AUTHENTICITY VERIFICATION ENGINE</span>
+            <span>AUTHENTICITY VERIFICATION ENGINE (AVE)</span>
             <h2>Sender & Channel Verification</h2>
           </div>
 
@@ -1003,7 +1003,7 @@ export default function Passport() {
       <section className="investigation-section">
         <div className="investigation-section-heading">
           <div>
-            <span>SECURITIES TRUST GRAPH</span>
+            <span>SECURITIES TRUST GRAPH (STG)</span>
             <h2>Historical Entity Trust Context</h2>
           </div>
 
@@ -1102,7 +1102,7 @@ export default function Passport() {
       <section className="investigation-section">
         <div className="investigation-section-heading">
           <div>
-            <span>EXPLAINABLE EVIDENCE</span>
+            <span>EXPLAINABLE EVIDENCE LEDGER (EEL)</span>
             <h2>Evidence Provenance</h2>
           </div>
 
@@ -1219,9 +1219,7 @@ export default function Passport() {
             </strong>
 
             <span>
-              Generated from the persisted multimodal security
-              investigation and its associated trust and evidence
-              context.
+              Generated from the completed SecureSense AI investigation, including trust verification, multimodal intelligence, explainable evidence, and historical trust context.
             </span>
           </div>
         </div>

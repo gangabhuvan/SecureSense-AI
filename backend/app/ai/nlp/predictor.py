@@ -123,6 +123,7 @@ def predict_email(text: str) -> Dict[str, Any]:
     start_time = time.perf_counter()
 
     with torch.inference_mode():
+        encoded.pop("token_type_ids", None)
         outputs = model(**encoded)
         logits = outputs.logits
         probabilities = F.softmax(logits, dim=-1)

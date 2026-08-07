@@ -4,30 +4,25 @@ analysis_service.py
 Orchestrates the complete SecureSense AI fraud detection pipeline.
 
 Pipeline:
-    OCR Text
-        ↓
-    ┌──────────────────────────────────────┐
-    │                                      │
-    ↓                                      ↓
-Entity / Rule Analysis              DistilBERT NLP
-                                           ↓
-                                  Integrated Gradients
-                                           ↓
-                               Explainable Evidence Ledger
-    │                                      │
-    └──────────────────┬───────────────────┘
-                       ↓
-               Hybrid Risk Scoring
-                       ↓
-            Trust Layer / AVE / FCP
-                       ↓
-              Final Analysis Result
+   Communication Ingestion
+   ↓
+   Multi-Modal Intelligence
+   ↓
+   Trust Verification Engine
+   ↓
+   Trust Intelligence Engine
+   ↓
+   Financial Communication Passport (FCP)
+   ↓
+   Securities Trust Graph (STG)
+   ↓
+   Explainable Evidence Ledger (EEL)
 """
 
 from __future__ import annotations
 
 import logging
-
+import re
 from app.ai.nlp.predictor import predict_email
 from app.services.communication_selector import (
     communication_selector,
@@ -145,6 +140,38 @@ class AnalysisService:
             4,
         )
 
+
+        # ======================================================
+    # URL-only Detection
+    # ======================================================
+
+    @staticmethod
+    def _is_url_only_input(text: str) -> bool:
+        """
+        Returns True when the communication contains only URLs
+        (plus whitespace/newlines), meaning NLP should be skipped.
+        """
+
+        stripped = text.strip()
+
+        if not stripped:
+            return False
+
+        url_pattern = re.compile(
+            r"(https?://\S+|www\.\S+)",
+            re.IGNORECASE,
+        )
+
+        without_urls = url_pattern.sub("", stripped)
+
+        without_urls = re.sub(
+            r"[\s\.,;:()\[\]<>\"'`]+",
+            "",
+            without_urls,
+        )
+
+        return len(without_urls) == 0
+
     # ======================================================
     # NLP Analysis
     # ======================================================
@@ -167,27 +194,9 @@ class AnalysisService:
                 text
             )
         )
-        print("\n========== SELECTED COMMUNICATION ==========")
-        print(communication_text)
-        print("===========================================\n")
-
-        # Never send an empty string to DistilBERT.
-        # If nothing meaningful was selected,
-        # gracefully fall back to the original text.
-        if not communication_text.strip():
-            communication_text = text
-        print("\n========== TEXT SENT TO DISTILBERT ==========")
-        print(communication_text)
-        print("=============================================\n")
         prediction = predict_email(
             communication_text
         )
-        print("\n========== DISTILBERT OUTPUT ==========")
-        print("Label:", prediction["label"])
-        print("Confidence:", prediction["confidence_percent"])
-        print("Probabilities:", prediction["probabilities"])
-        print("=======================================\n")
-
 
         nlp_risk = (
             self._calculate_nlp_risk(
@@ -380,7 +389,7 @@ class AnalysisService:
             EvidenceRecord(
 
                 module=(
-                    "NLP Security Analysis"
+                    "NLP Intelligence"
                 ),
 
                 evidence_type=(
@@ -411,7 +420,7 @@ class AnalysisService:
                     EvidenceModelInfo(
 
                         module=(
-                            "NLP Security Analysis"
+                            "NLP Intelligence"
                         ),
 
                         model_type=(
@@ -580,81 +589,74 @@ class AnalysisService:
         nlp_result = None
         nlp_ledger_entry = None
 
-        try:
-
-            nlp_result = (
-                self._analyse_nlp(
-                    text
-                )
-            )
+        if self._is_url_only_input(text):
 
             logger.info(
-                (
-                    "NLP classification: %s | "
-                    "confidence=%.4f | "
-                    "risk=%.4f"
-                ),
-                nlp_result.label,
-                nlp_result.confidence,
-                nlp_result.risk_score,
+                "Skipping NLP Intelligence: URL-only communication detected."
             )
 
-            # ----------------------------------------------
-            # Step 5: Integrated Gradients + EEL
-            # ----------------------------------------------
+        else:
 
             try:
 
-                nlp_ledger_entry = (
-                    self._record_nlp_evidence(
-                        text=nlp_result.communication_text,
-                        nlp_result=nlp_result,
+                nlp_result = (
+                    self._analyse_nlp(
+                        text
                     )
                 )
 
                 logger.info(
                     (
-                        "NLP evidence committed: "
-                        "%s | %s"
+                        "NLP classification: %s | "
+                        "confidence=%.4f | "
+                        "risk=%.4f"
                     ),
-                    (
-                        nlp_ledger_entry
-                        .evidence
-                        .evidence_id
-                    ),
-                    (
-                        nlp_ledger_entry
-                        .ledger_id
-                    ),
+                    nlp_result.label,
+                    nlp_result.confidence,
+                    nlp_result.risk_score,
                 )
+
+                try:
+
+                    nlp_ledger_entry = (
+                        self._record_nlp_evidence(
+                            text=nlp_result.communication_text,
+                            nlp_result=nlp_result,
+                        )
+                    )
+
+                    logger.info(
+                        (
+                            "NLP evidence committed: "
+                            "%s | %s"
+                        ),
+                        (
+                            nlp_ledger_entry
+                            .evidence
+                            .evidence_id
+                        ),
+                        (
+                            nlp_ledger_entry
+                            .ledger_id
+                        ),
+                    )
+
+                except Exception:
+
+                    logger.exception(
+                        "NLP explainability/EEL generation failed."
+                    )
+
+                    nlp_ledger_entry = None
 
             except Exception:
 
-                # Explainability/EEL failure should not
-                # discard a valid DistilBERT prediction.
-
                 logger.exception(
-                    "NLP explainability/EEL "
-                    "generation failed. "
-                    "Continuing with NLP "
-                    "classification."
+                    "DistilBERT NLP analysis failed. Continuing with rule-based analysis."
                 )
 
+                nlp_result = None
                 nlp_ledger_entry = None
-
-        except Exception:
-
-            # A model failure should not make the complete
-            # document pipeline unavailable.
-
-            logger.exception(
-                "DistilBERT NLP analysis failed. "
-                "Continuing with rule-based "
-                "analysis."
-            )
-
-            nlp_result = None
-            nlp_ledger_entry = None
 
         # --------------------------------------------------
         # Step 6: Hybrid risk scoring
@@ -723,6 +725,8 @@ class AnalysisService:
                 communication_type=(
                     result.document_type
                 ),
+                trusted_hosting_platform=result.trusted_hosting_platform,
+                hosting_provider=result.hosting_provider,
             )
         )
 

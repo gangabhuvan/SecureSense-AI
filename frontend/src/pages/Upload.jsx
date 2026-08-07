@@ -85,21 +85,19 @@ export default function Upload() {
 
     const processingSteps = useMemo(
     () => [
-        "Secure upload received",
+        "Communication Ingestion",
 
-        "Extracting text, image or voice content",
+        "Multi-Modal Intelligence",
 
-        "Running multimodal AI intelligence",
+        "Trust Verification Engine",
 
-        "Analyzing communication intent",
+        "Trust Intelligence Engine",
 
-        "Building Evidence-Based Consensus",
+        "Generating Financial Communication Passport (FCP)",
 
-        "Building Securities Trust Graph",
+        "Building Securities Trust Graph (STG)",
 
-        "Recording Explainable Evidence Ledger",
-
-        "Generating Financial Communication Passport",
+        "Recording Explainable Evidence Ledger (EEL)",
     ],
     []
 );
@@ -343,7 +341,7 @@ export default function Upload() {
                     <span className="status-dot" />
 
                     <div>
-                        <strong>Analysis Engine</strong>
+                        <strong>Multi-Modal Intelligence</strong>
                         <span>Ready</span>
                     </div>
                 </div>
@@ -373,7 +371,7 @@ export default function Upload() {
 
     <div>
         <span>REASONING</span>
-        <strong>CII + OCE + STG + EEL + FCP</strong>
+        <strong>CII + OCR + STG + EEL + FCP</strong>
     </div>
 
 </section>
@@ -534,8 +532,7 @@ export default function Upload() {
                         <div>
                             <strong>Ready to investigate</strong>
                             <span>
-                                SecureSense will run all applicable
-                                intelligence modules automatically.
+                                SecureSense will automatically execute the complete investigation workflow and generate the Financial Communication Passport (FCP), Securities Trust Graph (STG), and Explainable Evidence Ledger (EEL).
                             </span>
                         </div>
 

@@ -174,7 +174,8 @@ class AnalysisResult:
     evidence_modules: List[str] = field(
         default_factory=list
     )
-
+    trusted_hosting_platform: bool = False
+    hosting_provider: Optional[str] = None
     # ------------------------------------------------------
     # Financial Communication Passport
     # ------------------------------------------------------

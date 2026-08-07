@@ -25,7 +25,9 @@ from app.models.communication_intent_models import (
     CommunicationIntentResult,
     IntentEvidence,
 )
+import logging
 
+logger = logging.getLogger(__name__)
 
 class CommunicationIntentService:
 
@@ -237,7 +239,6 @@ class CommunicationIntentService:
                 )
             self.semantic_available = True
         except Exception as init_err:
-            print(f"[CII Warning] Semantic Transformer fallback active: {init_err}")
             self.semantic_available = False
 
     @lru_cache(maxsize=512)
@@ -285,7 +286,10 @@ class CommunicationIntentService:
                                 )
                             )
             except Exception as sem_err:
-                print(f"[CII Non-fatal Error] Semantic inference skipped: {sem_err}")
+                logger.warning(
+                    "CII semantic inference skipped: %s",
+                    sem_err,
+                )
 
         # ----------------------------------------------
         # 2. Keyword Refinement Layer
@@ -328,12 +332,12 @@ class CommunicationIntentService:
                 )
             )
             
-            context_scores["Event Poster"] += org_score * 0.7
-            context_scores["Student Circular"] += org_score * 0.3
-            context_scores["Recruitment Notice"] += org_score * 0.2
+            context_scores["Event Poster"] += org_score * 0.8
+            context_scores["Student Circular"] += org_score * 0.4
+            context_scores["Recruitment Notice"] += org_score * 0.3
             
             if context_scores["Government Notice"] > 0:
-                context_scores["Government Notice"] += org_score * 0.2
+                context_scores["Government Notice"] += org_score * 0.3
 
         # ----------------------------------------------
         # 4. Contact Info Detection
@@ -368,16 +372,6 @@ class CommunicationIntentService:
         # ----------------------------------------------
         
         sorted_contexts = sorted(context_scores.items(), key=lambda x: x[1], reverse=True)
-        print("\n========== CII DEBUG ==========")
-        print("Context Scores:")
-        for k, v in sorted_contexts:
-            print(f"{k:22}: {v:.2f}")
-
-        print("\nSemantic Similarities:")
-        for k, v in semantic_sim_map.items():
-            print(f"{k:22}: {v:.3f}")
-
-        print("===============================\n")
         best_ctx, best_score = sorted_contexts[0]
         
         for ctx, score in sorted_contexts[1:]:

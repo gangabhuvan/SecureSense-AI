@@ -86,27 +86,6 @@ class URLAnalysisService:
                 top_k=5,
             )
         )
-        print("\n========== URL MODEL DEBUG ==========")
-        print("URL:", url)
-
-        print("\nPrediction:")
-        print(result["label"])
-
-        print("\nConfidence:")
-        print(result["confidence_percent"])
-
-        print("\nPhishing Probability:")
-        print(result["phishing_probability_percent"])
-
-        print("\nFeature Vector:")
-        for k, v in result["features"].items():
-            print(f"{k:35} : {v}")
-
-        print("\nTreeSHAP Explanation:")
-        for item in explanation:
-             print(item)
-
-        print("=====================================\n")
         # ----------------------------------------------------
         # 3. Convert TreeSHAP output to EEL evidence
         # ----------------------------------------------------

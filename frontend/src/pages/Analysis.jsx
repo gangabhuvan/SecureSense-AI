@@ -373,11 +373,11 @@ function TechnicalEvidence({
 
   const nlpProbabilities =
     nlp?.probabilities &&
-    typeof nlp.probabilities ===
+      typeof nlp.probabilities ===
       "object"
       ? Object.entries(
-          nlp.probabilities
-        )
+        nlp.probabilities
+      )
       : [];
 
   const hasOcr =
@@ -391,7 +391,7 @@ function TechnicalEvidence({
     urls.length > 0 ||
     findings.length > 0 ||
     aiManipulationFindings.length >
-      0 ||
+    0 ||
     explainableEvidence.length > 0 ||
     analysis.processing_time != null;
 
@@ -521,25 +521,25 @@ function TechnicalEvidence({
                   )}
                 </strong>
               </div>
-               {
-    fusion?.voice_summary && (
+              {
+                fusion?.voice_summary && (
 
-        <div>
+                  <div>
 
-            <span>
-                Voice Authenticity
-            </span>
+                    <span>
+                      Voice Authenticity
+                    </span>
 
-            <strong>
-                {
-                    fusion.voice_summary
-                }
-            </strong>
+                    <strong>
+                      {
+                        fusion.voice_summary
+                      }
+                    </strong>
 
-        </div>
+                  </div>
 
-    )
-}
+                )
+              }
             </div>
 
           </div>
@@ -684,75 +684,75 @@ function TechnicalEvidence({
 
           {nlpProbabilities.length >
             0 && (
-            <div className="technical-block">
+              <div className="technical-block">
 
-              <div className="technical-block-heading">
-                <BrainCircuit
-                  size={18}
-                />
+                <div className="technical-block-heading">
+                  <BrainCircuit
+                    size={18}
+                  />
 
-                <div>
-                  <span>
-                    NLP EXPLAINABILITY
-                  </span>
+                  <div>
+                    <span>
+                      NLP EXPLAINABILITY
+                    </span>
 
-                  <h3>
-                    Classification
-                    Probabilities
-                  </h3>
+                    <h3>
+                      Classification
+                      Probabilities
+                    </h3>
+                  </div>
                 </div>
-              </div>
 
 
-              <div className="probability-grid">
+                <div className="probability-grid">
 
-                {nlpProbabilities.map(
-                  ([
-                    label,
-                    probability,
-                  ]) => (
-                    <div
-                      className="probability-card"
-                      key={label}
-                    >
-                      <span>
-                        {label}
-                      </span>
+                  {nlpProbabilities.map(
+                    ([
+                      label,
+                      probability,
+                    ]) => (
+                      <div
+                        className="probability-card"
+                        key={label}
+                      >
+                        <span>
+                          {label}
+                        </span>
 
-                      <strong>
-                        {percent(
-                          probability
-                        )}
-                      </strong>
+                        <strong>
+                          {percent(
+                            probability
+                          )}
+                        </strong>
 
-                      <div className="probability-track">
-                        <div
-                          className={`probability-fill ${statusClass(
-                            label
-                          )}`}
-                          style={{
-                            width: `${Math.min(
-                              100,
-                              Math.max(
-                                0,
-                                number(
-                                  probability,
-                                  0
+                        <div className="probability-track">
+                          <div
+                            className={`probability-fill ${statusClass(
+                              label
+                            )}`}
+                            style={{
+                              width: `${Math.min(
+                                100,
+                                Math.max(
+                                  0,
+                                  number(
+                                    probability,
+                                    0
+                                  )
                                 )
-                              )
-                            )}%`,
-                          }}
-                        />
-                      </div>
+                              )}%`,
+                            }}
+                          />
+                        </div>
 
-                    </div>
-                  )
-                )}
+                      </div>
+                    )
+                  )}
+
+                </div>
 
               </div>
-
-            </div>
-          )}
+            )}
 
 
           {/* ===============================================
@@ -818,9 +818,8 @@ function TechnicalEvidence({
                               {urlResult.url ||
                                 urlResult
                                   .input_url ||
-                                `URL ${
-                                  urlIndex +
-                                  1
+                                `URL ${urlIndex +
+                                1
                                 }`}
                             </strong>
                           </div>
@@ -829,7 +828,7 @@ function TechnicalEvidence({
                           <div
                             className={`technical-url-verdict ${statusClass(
                               urlResult.label ||
-                                urlResult.prediction
+                              urlResult.prediction
                             )}`}
                           >
                             {urlResult.label ||
@@ -852,20 +851,20 @@ function TechnicalEvidence({
                               {percent(
                                 urlResult
                                   .confidence_percent ??
-                                  (
-                                    urlResult
-                                      .confidence !=
+                                (
+                                  urlResult
+                                    .confidence !=
                                     null
+                                    ? urlResult
+                                      .confidence <=
+                                      1
                                       ? urlResult
-                                          .confidence <=
-                                        1
-                                        ? urlResult
-                                            .confidence *
-                                          100
-                                        : urlResult
-                                            .confidence
-                                      : null
-                                  )
+                                        .confidence *
+                                      100
+                                      : urlResult
+                                        .confidence
+                                    : null
+                                )
                               )}
                             </strong>
                           </div>
@@ -923,87 +922,87 @@ function TechnicalEvidence({
                               )}
                             </strong>
                           </div>
-{
-    urlResult?.passport?.verification
-        ?.official_domain !== undefined && (
+                          {
+                            urlResult?.passport?.verification
+                              ?.official_domain !== undefined && (
 
-    <>
+                              <>
 
-        <div>
+                                <div>
 
-            <span>
-                Official Domain
-            </span>
+                                  <span>
+                                    Official Domain
+                                  </span>
 
-            <strong>
-                {
-                    urlResult.passport
-                        .verification
-                        .official_domain
-                        ? "Yes"
-                        : "No"
-                }
-            </strong>
+                                  <strong>
+                                    {
+                                      urlResult.passport
+                                        .verification
+                                        .official_domain
+                                        ? "Yes"
+                                        : "No"
+                                    }
+                                  </strong>
 
-        </div>
+                                </div>
 
-        {
-            urlResult.passport
-                .verification
-                .official_provider && (
+                                {
+                                  urlResult.passport
+                                    .verification
+                                    .official_provider && (
 
-                <div>
+                                    <div>
 
-                    <span>
-                        Provider
-                    </span>
+                                      <span>
+                                        Provider
+                                      </span>
 
-                    <strong>
-                        {
-                            urlResult.passport
-                                .verification
-                                .official_provider
-                        }
-                    </strong>
+                                      <strong>
+                                        {
+                                          urlResult.passport
+                                            .verification
+                                            .official_provider
+                                        }
+                                      </strong>
 
-                </div>
+                                    </div>
 
-            )
-        }
+                                  )
+                                }
 
-        {
-            urlResult.passport
-                .verification
-                .registered_domain && (
+                                {
+                                  urlResult.passport
+                                    .verification
+                                    .registered_domain && (
 
-                <div>
+                                    <div>
 
-                    <span>
-                        Registered Domain
-                    </span>
+                                      <span>
+                                        Registered Domain
+                                      </span>
 
-                    <strong>
-                        {
-                            urlResult.passport
-                                .verification
-                                .registered_domain
-                        }
-                    </strong>
+                                      <strong>
+                                        {
+                                          urlResult.passport
+                                            .verification
+                                            .registered_domain
+                                        }
+                                      </strong>
 
-                </div>
+                                    </div>
 
-            )
-        }
+                                  )
+                                }
 
-    </>
+                              </>
 
-)
-}
+                            )
+                          }
                         </div>
 
 
                         {explanation.length >
-                        0 ? (
+                          0 ? (
                           <div className="shap-explanation">
 
                             <div className="shap-heading">
@@ -1034,8 +1033,8 @@ function TechnicalEvidence({
                                       number(
                                         feature
                                           .strength ??
-                                          feature
-                                            .shap_value,
+                                        feature
+                                          .shap_value,
                                         0
                                       )
                                     );
@@ -1050,8 +1049,8 @@ function TechnicalEvidence({
                                             number(
                                               item
                                                 .strength ??
-                                                item
-                                                  .shap_value,
+                                              item
+                                                .shap_value,
                                               0
                                             )
                                           )
@@ -1066,7 +1065,7 @@ function TechnicalEvidence({
                                         strength /
                                         maxStrength
                                       ) *
-                                        100
+                                      100
                                     );
 
                                   const direction =
@@ -1082,74 +1081,74 @@ function TechnicalEvidence({
                                     );
 
                                   return (
-  <div
-    className="shap-feature-row"
-    key={`${feature.feature}-${featureIndex}`}
-  >
-    {/* Feature */}
-    <div className="shap-feature-main">
-      <span className="shap-field-label">
-        Feature
-      </span>
+                                    <div
+                                      className="shap-feature-row"
+                                      key={`${feature.feature}-${featureIndex}`}
+                                    >
+                                      {/* Feature */}
+                                      <div className="shap-feature-main">
+                                        <span className="shap-field-label">
+                                          Feature
+                                        </span>
 
-      <strong className="shap-feature-title">
-        {humanizeEntityType(
-          feature.feature
-        )}
-      </strong>
+                                        <strong className="shap-feature-title">
+                                          {humanizeEntityType(
+                                            feature.feature
+                                          )}
+                                        </strong>
 
-      <div className="shap-feature-value">
-        <span>Value</span>
+                                        <div className="shap-feature-value">
+                                          <span>Value</span>
 
-        <strong>
-          {String(
-            feature.value ?? "N/A"
-          )}
-        </strong>
-      </div>
-    </div>
+                                          <strong>
+                                            {String(
+                                              feature.value ?? "N/A"
+                                            )}
+                                          </strong>
+                                        </div>
+                                      </div>
 
-    {/* Contribution */}
-    <div className="shap-contribution">
-      <span className="shap-field-label">
-        Contribution
-      </span>
+                                      {/* Contribution */}
+                                      <div className="shap-contribution">
+                                        <span className="shap-field-label">
+                                          Contribution
+                                        </span>
 
-      <div className="shap-contribution-value">
-        {strength.toFixed(4)}
-      </div>
+                                        <div className="shap-contribution-value">
+                                          {strength.toFixed(4)}
+                                        </div>
 
-      <div
-        className="shap-track"
-        aria-hidden="true"
-      >
-        <div
-          className={`shap-fill ${directionClass(
-            direction
-          )}`}
-          style={{
-            width: `${width}%`,
-          }}
-        />
-      </div>
-    </div>
+                                        <div
+                                          className="shap-track"
+                                          aria-hidden="true"
+                                        >
+                                          <div
+                                            className={`shap-fill ${directionClass(
+                                              direction
+                                            )}`}
+                                            style={{
+                                              width: `${width}%`,
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
 
-    {/* Direction */}
-    <div className="shap-direction-column">
-      <span className="shap-field-label">
-        Direction
-      </span>
+                                      {/* Direction */}
+                                      <div className="shap-direction-column">
+                                        <span className="shap-field-label">
+                                          Direction
+                                        </span>
 
-      <div
-        className={`shap-direction ${directionClass(
-          direction
-        )}`}
-      >
-        {direction}
-      </div>
-    </div>
-  </div>
-);
+                                        <div
+                                          className={`shap-direction ${directionClass(
+                                            direction
+                                          )}`}
+                                        >
+                                          {direction}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
                                 }
                               )}
 
@@ -1210,13 +1209,13 @@ function TechnicalEvidence({
                       className="raw-finding-card"
                     >
                       {typeof finding ===
-                      "string"
+                        "string"
                         ? finding
                         : JSON.stringify(
-                            finding,
-                            null,
-                            2
-                          )}
+                          finding,
+                          null,
+                          2
+                        )}
                     </pre>
                   )
                 )}
@@ -1228,96 +1227,96 @@ function TechnicalEvidence({
 
           {aiManipulationFindings.length >
             0 && (
-            <div className="technical-block">
+              <div className="technical-block">
 
-              <div className="technical-block-heading">
-                <ScanSearch size={18} />
+                <div className="technical-block-heading">
+                  <ScanSearch size={18} />
 
-                <div>
-                  <span>
-                    AI MANIPULATION
-                  </span>
+                  <div>
+                    <span>
+                      AI MANIPULATION
+                    </span>
 
-                  <h3>
-                    Manipulation Findings
-                  </h3>
+                    <h3>
+                      Manipulation Findings
+                    </h3>
+                  </div>
                 </div>
-              </div>
 
 
-              <div className="raw-finding-list">
-                {aiManipulationFindings.map(
-                  (
-                    finding,
-                    index
-                  ) => (
-                    <pre
-                      key={index}
-                      className="raw-finding-card"
-                    >
-                      {typeof finding ===
-                      "string"
-                        ? finding
-                        : JSON.stringify(
+                <div className="raw-finding-list">
+                  {aiManipulationFindings.map(
+                    (
+                      finding,
+                      index
+                    ) => (
+                      <pre
+                        key={index}
+                        className="raw-finding-card"
+                      >
+                        {typeof finding ===
+                          "string"
+                          ? finding
+                          : JSON.stringify(
                             finding,
                             null,
                             2
                           )}
-                    </pre>
-                  )
-                )}
-              </div>
+                      </pre>
+                    )
+                  )}
+                </div>
 
-            </div>
-          )}
+              </div>
+            )}
 
 
           {explainableEvidence.length >
             0 && (
-            <div className="technical-block">
+              <div className="technical-block">
 
-              <div className="technical-block-heading">
-                <ShieldCheck
-                  size={18}
-                />
+                <div className="technical-block-heading">
+                  <ShieldCheck
+                    size={18}
+                  />
 
-                <div>
-                  <span>
-                    EXPLAINABLE EVIDENCE
-                  </span>
+                  <div>
+                    <span>
+                      EXPLAINABLE EVIDENCE
+                    </span>
 
-                  <h3>
-                    Additional Evidence
-                  </h3>
+                    <h3>
+                      Additional Evidence
+                    </h3>
+                  </div>
                 </div>
-              </div>
 
 
-              <div className="raw-finding-list">
-                {explainableEvidence.map(
-                  (
-                    evidence,
-                    index
-                  ) => (
-                    <pre
-                      key={index}
-                      className="raw-finding-card"
-                    >
-                      {typeof evidence ===
-                      "string"
-                        ? evidence
-                        : JSON.stringify(
+                <div className="raw-finding-list">
+                  {explainableEvidence.map(
+                    (
+                      evidence,
+                      index
+                    ) => (
+                      <pre
+                        key={index}
+                        className="raw-finding-card"
+                      >
+                        {typeof evidence ===
+                          "string"
+                          ? evidence
+                          : JSON.stringify(
                             evidence,
                             null,
                             2
                           )}
-                    </pre>
-                  )
-                )}
-              </div>
+                      </pre>
+                    )
+                  )}
+                </div>
 
-            </div>
-          )}
+              </div>
+            )}
 
         </div>
       )}
@@ -1378,36 +1377,36 @@ export default function Analysis() {
 
     const immediateAnalysis =
       navigationResult?.analysis &&
-      navigationResult?.upload
-        ?.communication_id ===
+        navigationResult?.upload
+          ?.communication_id ===
         communicationId
         ? {
-            ...navigationResult.analysis,
+          ...navigationResult.analysis,
 
-            communication_id:
-              navigationResult.upload
-                .communication_id,
+          communication_id:
+            navigationResult.upload
+              .communication_id,
 
-            filename:
-              navigationResult.upload
-                .filename,
+          filename:
+            navigationResult.upload
+              .filename,
 
-            file_type:
-              navigationResult.upload
-                .file_type,
+          file_type:
+            navigationResult.upload
+              .file_type,
 
-            status:
-              navigationResult.upload
-                .status,
+          status:
+            navigationResult.upload
+              .status,
 
-            uploaded_at:
-              navigationResult.upload
-                .uploaded_at,
+          uploaded_at:
+            navigationResult.upload
+              .uploaded_at,
 
-            processing_time:
-              navigationResult
-                .processing_time,
-          }
+          processing_time:
+            navigationResult
+              .processing_time,
+        }
         : null;
 
 
@@ -1517,9 +1516,9 @@ export default function Analysis() {
           analysis.url_results ||
           analysis.urls
         );
-const qr =
-    analysis.qr ||
-    null;
+      const qr =
+        analysis.qr ||
+        null;
 
       const passport =
         analysis.passport ||
@@ -1562,10 +1561,10 @@ const qr =
         fusion?.decision ||
         (
           analysis.risk_level ===
-          "High"
+            "High"
             ? "High Risk"
             : analysis.risk_level ||
-              "Unknown"
+            "Unknown"
         );
 
 
@@ -1730,13 +1729,23 @@ const qr =
     true;
 
 
-  const recommendation =
-    passport?.recommended_action ||
-    (
-      riskTone === "high"
-        ? "Do not perform sensitive actions until this communication has been independently verified."
-        : "Review the available security evidence before taking sensitive financial action."
-    );
+  const trustedHosting =
+    fusion?.trusted_hosting_platform === true;
+
+const recommendation =
+    trustedHosting
+        ? (
+            "The communication is hosted on an official trusted platform that supports user-generated content. " +
+            "Verify the sender before submitting personal information, opening shared documents, or completing forms."
+        )
+        : (
+            passport?.recommended_action ||
+            (
+                riskTone === "high"
+                    ? "Do not perform sensitive actions until this communication has been independently verified."
+                    : "Review the available security evidence before taking sensitive financial action."
+            )
+        );
 
 
   /* =======================================================
@@ -1792,35 +1801,42 @@ const qr =
 
 
             {analysis.document_type && (
-  <>
-    <span className="meta-separator">•</span>
+              <>
+                <span className="meta-separator">•</span>
 
-    <span>
-      {analysis.document_type}
-    </span>
-  </>
-)}
+                <span>
+                  {analysis.document_type}
+                </span>
+              </>
+            )}
 
           </div>
 
         </div>
 
 
-        <div
-          className={`investigation-status ${
-            analysis.status ===
-            "Completed"
-              ? "completed"
-              : ""
-          }`}
-        >
+<div className="investigation-header-actions">
 
-          <CheckCircle2 size={16} />
+    <Link
+        to="/upload"
+        className="investigation-primary-link"
+    >
+        New Investigation
+        <ArrowRight size={16} />
+    </Link>
 
-          {analysis.status ||
-            "Analyzed"}
+    <div
+        className={`investigation-status ${
+            analysis.status === "Completed"
+                ? "completed"
+                : ""
+        }`}
+    >
+        <CheckCircle2 size={16} />
+        {analysis.status || "Analyzed"}
+    </div>
 
-        </div>
+</div>
 
       </section>
 
@@ -1858,7 +1874,7 @@ const qr =
             <h2>
               {String(
                 analysis.risk_level ||
-                  "Unknown"
+                "Unknown"
               ).toUpperCase()}{" "}
               RISK
             </h2>
@@ -1904,10 +1920,10 @@ const qr =
 
             <strong>
               {passport?.trust_score !=
-              null
+                null
                 ? score(
-                    passport.trust_score
-                  )
+                  passport.trust_score
+                )
                 : "N/A"}
             </strong>
           </div>
@@ -2009,18 +2025,17 @@ const qr =
           value={
             stg?.reputation_available
               ? stg.classification ||
-                "Available"
+              "Available"
               : "No Reputation"
           }
-          detail={`${
-            stg?.entities_analysed ??
+          detail={`${stg?.entities_analysed ??
             0
-          } entities analysed`}
+            } entities analysed`}
           tone={
             stg?.reputation_available
               ? statusClass(
-                  stg.classification
-                )
+                stg.classification
+              )
               : "neutral"
           }
         />
@@ -2038,7 +2053,7 @@ const qr =
 
           <div>
             <span>
-              DECISION INTELLIGENCE
+              TRUST INTELLIGENCE ENGINE
             </span>
 
             <h2>
@@ -2055,6 +2070,39 @@ const qr =
             fusion?.summary ||
             "No security summary was available."}
         </p>
+
+        {fusion?.trusted_hosting_platform && (
+    <div className="hosting-information-card">
+
+        <h4>Trusted Hosting Platform</h4>
+
+        <div className="hosting-grid">
+
+            <div>
+                <span>Infrastructure</span>
+                <strong>
+                    ✓ Trusted {fusion.hosting_provider}
+                </strong>
+            </div>
+
+            <div>
+                <span>Content</span>
+                <strong>
+                    ⚠ User-generated
+                </strong>
+            </div>
+
+            <div>
+                <span>Recommendation</span>
+                <strong>
+                    Verify the sender before submitting personal information, opening shared documents or completing forms.
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+)}
 
 
         {fusion && (
@@ -2108,81 +2156,81 @@ const qr =
 
             <div>
               <span>
-                  Communication Context
+                Communication Context
               </span>
               <strong>
-                  {
-                      analysis?.communication_intent
-                          ?.context ??
-                      "Unknown"
-                  }
+                {
+                  analysis?.communication_intent
+                    ?.context ??
+                  "Unknown"
+                }
               </strong>
             </div>
 
             <div>
               <span>
-                  Evidence Consensus
+                Evidence Consensus
               </span>
               <strong>
-                  {
-                      fusion?.override_applied
-                          ? "Applied"
-                          : "Not Applied"
-                  }
+                {
+                  fusion?.override_applied
+                    ? "Applied"
+                    : "Not Applied"
+                }
               </strong>
             </div>
 
             <div>
               <span>
-                  Voice Authenticity
+                Voice Authenticity
               </span>
               <strong>
-                  {
-                      fusion?.voice_summary ??
-                      "Not Available"
-                  }
+                {
+                  fusion?.voice_summary ??
+                  "Not Available"
+                }
               </strong>
             </div>
 
             {
               analysis?.communication_intent?.evidence?.length > 0 && (
                 <div className="technical-block" style={{ gridColumn: "1 / -1", marginTop: "1rem" }}>
-                    <div className="technical-block-heading">
-                        <Workflow size={18} />
-                        <div>
-                            <span>COMMUNICATION INTELLIGENCE</span>
-                            <h3>Semantic Analysis</h3>
-                            <div className="technical-model">
-                                <span>Semantic Model</span>
-                                <strong>SentenceTransformer (all-MiniLM-L6-v2)</strong>
-                            </div>
-                        </div>
+                  <div className="technical-block-heading">
+                    <Workflow size={18} />
+                    <div>
+                      <span>COMMUNICATION INTELLIGENCE</span>
+                      <h3>Semantic Analysis</h3>
+                      <div className="technical-model">
+                        <span>Semantic Model</span>
+                        <strong>SentenceTransformer (all-MiniLM-L6-v2)</strong>
+                      </div>
                     </div>
+                  </div>
 
-                    <div className="technical-stat-grid" style={{ marginBottom: "1.5rem" }}>
-                        <div>
-                            <span>Detected Context</span>
-                            <strong>{analysis?.communication_intent?.context || "Unknown"}</strong>
-                        </div>
-                        <div>
-                            <span>Security Intent</span>
-                            <strong>{analysis?.communication_intent?.security_intent || "Unknown"}</strong>
-                        </div>
+                  <div className="technical-stat-grid" style={{ marginBottom: "1.5rem" }}>
+                    <div>
+                      <span>Detected Context</span>
+                      <strong>{analysis?.communication_intent?.context || "Unknown"}</strong>
                     </div>
+                    <div>
+                      <span>Security Intent</span>
+                      <strong>{analysis?.communication_intent?.security_intent || "Unknown"}</strong>
+                    </div>
+                  </div>
 
-                    <div className="technical-block-heading">
-                        <div>
-                            <h3>Evidence Used</h3>
-                        </div>
+                  <div className="technical-block-heading">
+                    <div>
+                      <h3>Evidence Used</h3>
                     </div>
+                  </div>
 
-                    <div className="entity-chip-list">
-                        {analysis.communication_intent.evidence.map((item, index) => (
-                            <span key={index} className="entity-chip">
-                                {item.description}
-                            </span>
-                        ))}
-                    </div>
+                  <div className="entity-chip-list">
+                    {analysis.communication_intent.evidence.map((item, index) => (
+                      <span key={index} className="entity-chip">
+                        {item.description}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )
             }
@@ -2230,7 +2278,7 @@ const qr =
 
           <ModuleCard
             icon={BrainCircuit}
-            title="NLP Security Analysis"
+            title="NLP Intelligence"
             subtitle="DistilBERT + Integrated Gradients"
             status={nlp?.label}
             confidence={
@@ -2238,7 +2286,7 @@ const qr =
               (
                 nlp?.confidence != null
                   ? nlp.confidence *
-                    100
+                  100
                   : null
               )
             }
@@ -2254,7 +2302,7 @@ const qr =
 
           <ModuleCard
             icon={Eye}
-            title="Visual Phishing Intelligence"
+            title="Visual Intelligence"
             subtitle="ConvNeXt-Tiny + Grad-CAM"
             status={visual?.label}
             confidence={
@@ -2262,9 +2310,9 @@ const qr =
                 ?.confidence_percent ??
               (
                 visual?.confidence !=
-                null
+                  null
                   ? visual.confidence *
-                    100
+                  100
                   : null
               )
             }
@@ -2279,31 +2327,31 @@ const qr =
           />
 
           <ModuleCard
-    icon={Fingerprint}
-    title="Voice Authenticity"
-    subtitle="Whisper Base + Spectra-AASIST3"
+            icon={Fingerprint}
+            title="Voice Intelligence"
+            subtitle="Whisper Base + Spectra-AASIST3"
 
-    status={
-        fusion?.voice_label ??
-        null
-    }
+            status={
+              fusion?.voice_label ??
+              null
+            }
 
-    confidence={
-        fusion?.voice_confidence ??
-        null
-    }
+            confidence={
+              fusion?.voice_confidence ??
+              null
+            }
 
-    risk={
-        fusion?.voice_risk ??
-        null
-    }
+            risk={
+              fusion?.voice_risk ??
+              null
+            }
 
-    latency={null}
+            latency={null}
 
-    unavailableText={
-        "Voice authenticity analysis was not applicable to this communication."
-    }
-/>
+            unavailableText={
+              "Voice authenticity analysis was not applicable to this communication."
+            }
+          />
 
 
           <ModuleCard
@@ -2313,63 +2361,64 @@ const qr =
             status={
               urls.length > 0
                 ? (
-                    urls[0]?.label ||
-                    urls[0]
-                      ?.prediction ||
-                    "Analyzed"
-                  )
+                  urls[0]?.label ||
+                  urls[0]
+                    ?.prediction ||
+                  "Analyzed"
+                )
                 : null
             }
             confidence={
               urls.length > 0
                 ? (
+                  urls[0]
+                    ?.confidence_percent ??
+                  (
                     urls[0]
-                      ?.confidence_percent ??
-                    (
-                      urls[0]
-                        ?.confidence !=
+                      ?.confidence !=
                       null
-                        ? (
-                            urls[0]
-                              .confidence <=
-                            1
-                              ? urls[0]
-                                  .confidence *
-                                100
-                              : urls[0]
-                                  .confidence
-                          )
-                        : null
-                    )
+                      ? (
+                        urls[0]
+                          .confidence <=
+                          1
+                          ? urls[0]
+                            .confidence *
+                          100
+                          : urls[0]
+                            .confidence
+                      )
+                      : null
                   )
+                )
                 : null
             }
             risk={
               urls.length > 0
                 ? urls[0]
-                    ?.risk_score
+                  ?.risk_score
                 : null
             }
             latency={
               urls.length > 0
                 ? urls[0]
-                    ?.inference_time_ms
+                  ?.inference_time_ms
                 : null
             }
             unavailableText="No analysed URLs were detected in this communication."
           />
 
-<ModuleCard
-    icon={Workflow}
-    title="Communication Intent Intelligence"
-    subtitle="Semantic Intelligence • all-MiniLM-L6-v2"
-    status={analysis?.communication_intent?.context}
-    intent={analysis?.communication_intent?.security_intent}
-    confidence={analysis?.communication_intent?.confidence ?? null}
-    risk={analysis?.communication_intent?.risk_score ?? null}
-    latency={null}
-    unavailableText="Communication Intent Intelligence unavailable."
-/>
+
+          <ModuleCard
+            icon={Workflow}
+            title="Communication Intent Intelligence (CII)"
+            subtitle="Semantic Intelligence • all-MiniLM-L6-v2"
+            status={analysis?.communication_intent?.context}
+            intent={analysis?.communication_intent?.security_intent}
+            confidence={analysis?.communication_intent?.confidence ?? null}
+            risk={analysis?.communication_intent?.risk_score ?? null}
+            latency={null}
+            unavailableText="Communication Intent Intelligence unavailable."
+          />
 
         </div>
 
@@ -2408,8 +2457,7 @@ const qr =
                     {urlResult.url ||
                       urlResult
                         .input_url ||
-                      `URL ${
-                        index + 1
+                      `URL ${index + 1
                       }`}
                   </span>
 
@@ -2439,100 +2487,100 @@ const qr =
 
         )}
         {
-    qr?.available && (
+          qr?.available && (
 
-        <div className="url-results">
+            <div className="url-results">
 
-            <h3>
+              <h3>
                 QR Intelligence ({qr.count})
-            </h3>
+              </h3>
 
-            {
+              {
                 qr.codes.map(
-                    (
-                        code,
-                        index,
-                    ) => (
+                  (
+                    code,
+                    index,
+                  ) => (
 
-                       <div
-    className="url-result-row"
-    key={index}
->
+                    <div
+                      className="url-result-row"
+                      key={index}
+                    >
 
-    <ScanSearch
-        size={16}
-    />
+                      <ScanSearch
+                        size={16}
+                      />
 
-    <div
-        style={{
-            flex: 1,
-        }}
-    >
+                      <div
+                        style={{
+                          flex: 1,
+                        }}
+                      >
 
-        <div>
+                        <div>
 
-    <small>
-        {code.type}
-    </small>
+                          <small>
+                            {code.type}
+                          </small>
 
-    <span>
-        {code.decoded_data}
-    </span>
+                          <span>
+                            {code.decoded_data}
+                          </span>
 
-</div>
+                        </div>
 
-        {
-            code.url_analysis && (
+                        {
+                          code.url_analysis && (
 
-                <small>
+                            <small>
 
-                    Risk{" "}
-                    {
-                        score(
-                            code.url_analysis
-                                .risk_score
-                        )
-                    }
+                              Risk{" "}
+                              {
+                                score(
+                                  code.url_analysis
+                                    .risk_score
+                                )
+                              }
 
-                    {" • "}
+                              {" • "}
 
-                    Confidence{" "}
-                    {
-                        percent(
-                            code.url_analysis
-                                .confidence_percent
-                        )
-                    }
+                              Confidence{" "}
+                              {
+                                percent(
+                                  code.url_analysis
+                                    .confidence_percent
+                                )
+                              }
 
-                </small>
+                            </small>
 
-            )
-        }
+                          )
+                        }
 
-    </div>
+                      </div>
 
-    <div
-        className={`technical-url-verdict ${statusClass(
-            code.url_analysis?.label
-        )}`}
-    >
+                      <div
+                        className={`technical-url-verdict ${statusClass(
+                          code.url_analysis?.label
+                        )}`}
+                      >
 
-        {
-            code.url_analysis?.label ??
-            code.type
-        }
+                        {
+                          code.url_analysis?.label ??
+                          code.type
+                        }
 
-    </div>
+                      </div>
 
-</div>
-                    )
+                    </div>
+                  )
                 )
-            }
+              }
 
-        </div>
+            </div>
 
-    )
-}
+          )
+        }
 
       </section>
 
@@ -2569,7 +2617,7 @@ const qr =
               </span>
 
               <h2>
-                Securities Trust Graph
+                Securities Trust Graph (STG)
               </h2>
 
             </div>
@@ -2627,10 +2675,10 @@ const qr =
 
               <strong>
                 {stg?.graph_risk_score !=
-                null
+                  null
                   ? score(
-                      stg.graph_risk_score
-                    )
+                    stg.graph_risk_score
+                  )
                   : "N/A"}
               </strong>
             </div>
@@ -2648,7 +2696,7 @@ const qr =
             className="investigation-secondary-link"
             to={`/trust-graph/${encodeURIComponent(
               analysis.communication_id ||
-                communicationId
+              communicationId
             )}`}
           >
             Explore Trust Graph
@@ -2666,12 +2714,11 @@ const qr =
             <div>
 
               <span>
-                TRUST PASSPORT
+                TRUST PROFILE
               </span>
 
               <h2>
-                Financial Communication
-                Passport
+                Financial Communication Passport (FCP)
               </h2>
 
             </div>
@@ -2731,41 +2778,41 @@ const qr =
                       "Unknown"}
                   </strong>
                 </div>
-{
-  passport?.verification?.official_provider && (
+                {
+                  passport?.verification?.official_provider && (
 
-    <div>
+                    <div>
 
-      <span>
-        Official Provider
-      </span>
+                      <span>
+                        Official Provider
+                      </span>
 
-      <strong>
-        {passport.verification.official_provider}
-      </strong>
+                      <strong>
+                        {passport.verification.official_provider}
+                      </strong>
 
-    </div>
+                    </div>
 
-  )
-}
+                  )
+                }
 
-{
-  passport?.verification?.registered_domain && (
+                {
+                  passport?.verification?.registered_domain && (
 
-    <div>
+                    <div>
 
-      <span>
-        Registered Domain
-      </span>
+                      <span>
+                        Registered Domain
+                      </span>
 
-      <strong>
-        {passport.verification.registered_domain}
-      </strong>
+                      <strong>
+                        {passport.verification.registered_domain}
+                      </strong>
 
-    </div>
+                    </div>
 
-  )
-}
+                  )
+                }
 
                 <div>
                   <span>
@@ -2777,8 +2824,8 @@ const qr =
                       .threat_categories
                       ?.length
                       ? passport
-                          .threat_categories
-                          .join(", ")
+                        .threat_categories
+                        .join(", ")
                       : "None identified"}
                   </strong>
                 </div>
@@ -2790,7 +2837,7 @@ const qr =
                 className="investigation-secondary-link"
                 to={`/passport/${encodeURIComponent(
                   analysis.communication_id ||
-                    communicationId
+                  communicationId
                 )}`}
               >
                 Open Full Passport
@@ -2837,7 +2884,7 @@ const qr =
             </span>
 
             <h2>
-              Explainable Evidence Ledger
+              Explainable Evidence Ledger (EEL)
             </h2>
 
           </div>
@@ -2957,7 +3004,7 @@ const qr =
           className="investigation-secondary-link"
           to={`/ledger/${encodeURIComponent(
             analysis.communication_id ||
-              communicationId
+            communicationId
           )}`}
         >
           Inspect Evidence Ledger

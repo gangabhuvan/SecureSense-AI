@@ -558,18 +558,15 @@ export default function TrustGraph() {
           <div className="stg-header-label">
             <Network size={13} />
 
-            SECURITIES TRUST GRAPH
+            SECURITIES TRUST GRAPH (STG)
           </div>
 
           <h1>
-            Historical Entity Trust Context
+            Historical Entity Trust Intelligence
           </h1>
 
           <p className="stg-header-description">
-            Relationship-aware security intelligence
-            derived from previously observed entities,
-            communication associations and durable
-            SecureSense evidence.
+            Historical trust intelligence derived from previously observed entities, relationship analysis and explainable SecureSense evidence.
           </p>
 
           <div className="stg-header-meta">
@@ -634,7 +631,7 @@ export default function TrustGraph() {
 
           <div>
             <span className="stg-eyebrow">
-              GRAPH INTELLIGENCE
+              TRUST INTELLIGENCE ENGINE
             </span>
 
             <h2>
@@ -759,7 +756,7 @@ export default function TrustGraph() {
         <div className="stg-section-heading">
           <div>
             <span className="stg-eyebrow">
-              SECURITY CONTEXT
+              TRUST VERIFICATION
             </span>
 
             <h2>
@@ -847,7 +844,7 @@ export default function TrustGraph() {
         <div className="stg-section-heading">
           <div>
             <span className="stg-eyebrow">
-              RELATIONSHIP INTELLIGENCE
+              SECURITIES TRUST GRAPH
             </span>
 
             <h2>
@@ -931,7 +928,7 @@ export default function TrustGraph() {
         <div className="stg-section-heading">
           <div>
             <span className="stg-eyebrow">
-              TRUST INTELLIGENCE
+              TRUST INTELLIGENCE ENGINE
             </span>
 
             <h2>
@@ -1140,11 +1137,9 @@ export default function TrustGraph() {
 
           <span>
             <strong>
-              SecureSense Securities Trust Graph
+              SecureSense Securities Trust Graph (STG)
             </strong>
-
-            Historical relationship intelligence
-            for auditable communication security.
+            Historical trust intelligence for explainable financial communication investigations.
           </span>
         </div>
 

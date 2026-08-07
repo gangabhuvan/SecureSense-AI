@@ -1140,7 +1140,7 @@ class ReportService:
 
             story.append(
                 Paragraph(
-                    "<b>NLP Security Analysis</b>",
+                    "<b>NLP Intelligence</b>",
                     self.styles["body"],
                 )
             )
@@ -1204,7 +1204,7 @@ class ReportService:
 
             story.append(
                 Paragraph(
-                    "<b>Visual Phishing Intelligence</b>",
+                    "<b>Visual Intelligence</b>",
                     self.styles["body"],
                 )
             )

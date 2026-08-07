@@ -25,24 +25,23 @@ import api, {
 
 const MODULES = [
   {
-    name: "NLP Security Analysis",
+    name: "NLP Intelligence",
     description:
-      "DistilBERT-based communication security classification and explainability.",
+      "DistilBERT-based communication intelligence, phishing detection, and explainable language analysis.",
     icon: Brain,
     type: "nlp",
   },
   {
-    name: "Visual Phishing Intelligence",
+    name: "Visual Intelligence",
     description:
-      "ConvNeXt-based visual phishing analysis with Grad-CAM evidence.",
+      "ConvNeXt-based visual analysis for fraudulent documents, websites, QR codes, and phishing content with Grad-CAM evidence.",
     icon: Eye,
     type: "vision",
   },
-
   {
-    name: "Voice Authenticity",
+    name: "Voice Intelligence",
     description:
-      "Whisper transcription with Spectra-AASIST3 synthetic voice detection.",
+      "Whisper transcription with Spectra-AASIST3 analysis for voice phishing, synthetic voice detection, and communication verification.",
     icon: Activity,
     type: "voice",
   },
@@ -56,28 +55,28 @@ const MODULES = [
   {
     name: "URL Intelligence",
     description:
-      "URL-level phishing intelligence for detected communication links.",
+      "Website URL intelligence for phishing detection, domain analysis, and communication link verification.",
     icon: Globe2,
     type: "url",
   },
   {
-    name: "Securities Trust Graph",
+    name: "Securities Trust Graph (STG)",
     description:
-      "Historical entity reputation and relationship-aware trust context.",
+      "Correlates communications, entities, domains, and relationships to identify coordinated fraud campaigns.",
     icon: Network,
     type: "stg",
   },
   {
-    name: "Explainable Evidence Ledger",
+    name: "Explainable Evidence Ledger (EEL)",
     description:
-      "Durable evidence provenance and ledger-backed security records.",
+      "Maintains durable evidence provenance, explainable AI records, and investigation history.",
     icon: Database,
     type: "eel",
   },
   {
-    name: "Financial Communication Passport",
+    name: "Financial Communication Passport (FCP)",
     description:
-      "Consolidated communication trust, verification and security passport.",
+      "Generates a standardized trust profile with authenticity findings, risk assessment, trust score, and explainable evidence.",
     icon: FileBadge2,
     type: "fcp",
   },
@@ -423,7 +422,7 @@ export default function Settings() {
 
             <div>
               <span>
-                ANALYSIS ENGINE
+                MULTI-MODAL INTELLIGENCE
               </span>
 
               <strong>
@@ -497,7 +496,7 @@ export default function Settings() {
         <div className="settings-section-heading">
           <div>
             <span>
-              SECURITY INTELLIGENCE
+              PLATFORM MODULES
             </span>
 
             <h2>
@@ -582,66 +581,76 @@ export default function Settings() {
         </div>
 
         <div className="settings-pipeline">
-          <div className="settings-pipeline-step">
-            <span>01</span>
 
-            <strong>
-              Communication Intake
-            </strong>
+  <div className="settings-pipeline-step">
+    <span>01</span>
+    <strong>Communication Ingestion</strong>
+    <small>
+      Emails • SMS • Website URLs • PDFs • Images • QR Codes • Voice Recordings
+    </small>
+  </div>
 
-            <small>
-              File and text ingestion
-            </small>
-          </div>
+  <div className="settings-pipeline-arrow">→</div>
 
-          <div className="settings-pipeline-arrow">
-            →
-          </div>
+  <div className="settings-pipeline-step">
+    <span>02</span>
+    <strong>Multi-Modal Intelligence</strong>
+    <small>
+      NLP • Computer Vision • OCR • Voice • URL • Metadata
+    </small>
+  </div>
 
-          <div className="settings-pipeline-step">
-            <span>02</span>
+  <div className="settings-pipeline-arrow">→</div>
 
-            <strong>
-              Multimodal Analysis
-            </strong>
+  <div className="settings-pipeline-step">
+    <span>03</span>
+    <strong>Trust Verification Engine</strong>
+    <small>
+      Authenticity Verification • Domain Validation • QR Verification • Metadata Consistency
+    </small>
+  </div>
 
-            <small>
-              NLP · Vision · Voice · URL · Communication Intent
-            </small>
-          </div>
+  <div className="settings-pipeline-arrow">→</div>
 
-          <div className="settings-pipeline-arrow">
-            →
-          </div>
+  <div className="settings-pipeline-step">
+    <span>04</span>
+    <strong>Trust Intelligence Engine</strong>
+    <small>
+      Evidence Fusion • Risk Assessment • Explainable AI • Trust Decision
+    </small>
+  </div>
 
-          <div className="settings-pipeline-step">
-            <span>03</span>
+  <div className="settings-pipeline-arrow">→</div>
 
-            <strong>
-              Trust Intelligence
-            </strong>
+  <div className="settings-pipeline-step">
+    <span>05</span>
+    <strong>Financial Communication Passport (FCP)</strong>
+    <small>
+      Standardized Trust Profile
+    </small>
+  </div>
 
-            <small>
-              Evidence-Based Consensus · Multimodal Fusion · STG
-            </small>
-          </div>
+  <div className="settings-pipeline-arrow">→</div>
 
-          <div className="settings-pipeline-arrow">
-            →
-          </div>
+  <div className="settings-pipeline-step">
+    <span>06</span>
+    <strong>Securities Trust Graph (STG)</strong>
+    <small>
+      Campaign Correlation & Entity Relationships
+    </small>
+  </div>
 
-          <div className="settings-pipeline-step">
-            <span>04</span>
+  <div className="settings-pipeline-arrow">→</div>
 
-            <strong>
-              Evidence &amp; Passport
-            </strong>
+  <div className="settings-pipeline-step">
+    <span>07</span>
+    <strong>Explainable Evidence Ledger (EEL)</strong>
+    <small>
+      Evidence Provenance & Investigation Records
+    </small>
+  </div>
 
-            <small>
-              EEL · FCP
-            </small>
-          </div>
-        </div>
+</div>
       </section>
 
       {/* ===================================================

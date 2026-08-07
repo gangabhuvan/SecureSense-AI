@@ -10,11 +10,11 @@ diluting or overriding their learned predictions.
 
 Supported modalities
 --------------------
-- DistilBERT NLP Security Analysis
-- ConvNeXt-Tiny Visual Phishing Intelligence
-- XGBoost URL Intelligence
-- Spectra-AASIST3 Voice Authenticity
-- Communication Intent Intelligence (CII)
+-DistilBERT NLP Intelligence
+-ConvNeXt-Tiny Visual Intelligence
+-XGBoost URL Intelligence
+-Spectra-AASIST3 Voice Intelligence
+-Communication Intent Intelligence (CII)
 
 Design principles
 -----------------
@@ -66,10 +66,10 @@ class MultimodalFusionResult:
     url_risk: Optional[float] = None
     voice_risk: Optional[float] = None
     intent_risk: Optional[float] = None
-
+    trusted_hosting_platform: bool = False
     voice_confidence: Optional[float] = None
     intent_confidence: Optional[float] = None
-
+    hosting_provider: Optional[str] = None
     nlp_label: Optional[str] = None
     visual_label: Optional[str] = None
     url_label: Optional[str] = None
@@ -98,7 +98,8 @@ class MultimodalFusionResult:
             "url_risk": self.url_risk,
             "voice_risk": self.voice_risk,
             "intent_risk": self.intent_risk,
-
+            "trusted_hosting_platform": self.trusted_hosting_platform,
+            "hosting_provider": self.hosting_provider,
             "voice_confidence": self.voice_confidence,
             "intent_confidence": self.intent_confidence,
 
@@ -252,58 +253,6 @@ class MultimodalFusionService:
         if visual_signal and str(visual_signal.get("label", "")).lower() == "legitimate":
             consensus_score += 1
 
-        print("\n========== URL EVIDENCE CONSENSUS DEBUG ==========")
-        print(
-            "NLP Legitimate:",
-            nlp_signal is not None
-            and str(nlp_signal.get("label", "")).lower() == "legitimate"
-        )
-        print(
-            "Intent Legitimate:",
-            intent_signal is not None
-            and str(intent_signal.get("label", "")).lower() in {
-                "legitimate",
-                "likely legitimate",
-            }
-        )
-        if intent_signal:
-            print("Context:", intent_signal.get("context"))
-            print(
-                "Trusted Context:",
-                str(intent_signal.get("context", "")).lower().strip()
-                in trusted_contexts,
-            )
-        if domain_signal:
-            print("Official Domain:", domain_signal.get("official_domain"))
-            print("Provider Type:", domain_signal.get("provider_type"))
-            print("UGC:", domain_signal.get("user_generated_content"))
-
-            provider = str(domain_signal.get("provider_type", "")).lower().strip()
-            trusted_provider_keywords = {
-                "academic",
-                "education",
-                "university",
-                "government",
-                "bank",
-                "central bank",
-                "financial",
-                "technology",
-            }
-            print(
-                "Trusted Domain:",
-                any(keyword in provider for keyword in trusted_provider_keywords),
-            )
-        else:
-            print("Domain Signal: None")
-
-        print(
-            "Visual Legitimate:",
-            visual_signal is not None
-            and str(visual_signal.get("label", "")).lower() == "legitimate"
-        )
-        print("URL Consensus Score:", consensus_score)
-        print("==================================================\n")
-
         # A strong consensus (>= 5 out of 7 possible points) validates the override
         override = consensus_score >= 5
 
@@ -387,58 +336,6 @@ class MultimodalFusionService:
         # 5. Visual Legitimacy (+1)
         if visual_signal and str(visual_signal.get("label", "")).lower() == "legitimate":
             consensus_score += 1
-
-        print("\n========== NLP EVIDENCE CONSENSUS DEBUG ==========")
-        print(
-            "URL Legitimate:",
-            url_signal is not None
-            and str(url_signal.get("label", "")).lower() == "legitimate"
-        )
-        print(
-            "Intent Legitimate:",
-            intent_signal is not None
-            and str(intent_signal.get("label", "")).lower() in {
-                "legitimate",
-                "likely legitimate",
-            }
-        )
-        if intent_signal:
-            print("Context:", intent_signal.get("context"))
-            print(
-                "Trusted Context:",
-                str(intent_signal.get("context", "")).lower().strip()
-                in trusted_contexts,
-            )
-        if domain_signal:
-            print("Official Domain:", domain_signal.get("official_domain"))
-            print("Provider Type:", domain_signal.get("provider_type"))
-            print("UGC:", domain_signal.get("user_generated_content"))
-
-            provider = str(domain_signal.get("provider_type", "")).lower().strip()
-            trusted_provider_keywords = {
-                "academic",
-                "education",
-                "university",
-                "government",
-                "bank",
-                "central bank",
-                "financial",
-                "technology",
-            }
-            print(
-                "Trusted Domain:",
-                any(keyword in provider for keyword in trusted_provider_keywords),
-            )
-        else:
-            print("Domain Signal: None")
-
-        print(
-            "Visual Legitimate:",
-            visual_signal is not None
-            and str(visual_signal.get("label", "")).lower() == "legitimate"
-        )
-        print("NLP Consensus Score:", consensus_score)
-        print("==================================================\n")
 
         # A strong consensus (>= 5 out of 7 possible points) validates the override
         override = consensus_score >= 5
@@ -631,6 +528,25 @@ class MultimodalFusionService:
 
         return None
 
+    
+
+        # ======================================================
+    # Hosted Content Detection
+    # ======================================================
+
+    @staticmethod
+    def _is_trusted_hosting_platform(
+        domain_signal: Optional[Dict[str, Any]],
+    ) -> bool:
+
+        if not domain_signal:
+            return False
+
+        return (
+            domain_signal.get("official_domain", False)
+            and domain_signal.get("user_generated_content", False)
+        )
+
     # ======================================================
     # Voice Signal
     # ======================================================
@@ -800,9 +716,11 @@ class MultimodalFusionService:
                 )
                 if domain_signal.get("user_generated_content"):
                     summary += (
-                        " The platform supports user-generated content, "
-                        "so hosting authenticity alone does not establish "
-                        "communication legitimacy."
+                        " The communication is hosted on a trusted platform that "
+                        "allows user-generated content. Infrastructure authenticity "
+                        "was verified, but the hosted content itself cannot be "
+                        "independently authenticated. Security decisions therefore "
+                        "continue to rely primarily on the trained AI models."
                     )
 
             return summary
@@ -868,8 +786,8 @@ class MultimodalFusionService:
             if domain_signal.get("user_generated_content"):
                 summary += (
                     " The platform supports user-generated content, "
-                    "so hosting authenticity alone does not establish "
-                    "communication legitimacy."
+                    "The hosting infrastructure is trusted, but hosted pages "
+                    "must still be verified because anyone can create and share content."
                 )
 
         return summary
@@ -899,6 +817,9 @@ class MultimodalFusionService:
         visual_signal = self._visual_signal(visual_result)
         url_signal = self._url_signal(url_results)
         domain_signal = self._domain_signal(domain_results)
+        trusted_hosting = self._is_trusted_hosting_platform(
+            domain_signal
+        )
         voice_signal = self._voice_signal(voice_authenticity)
         intent_signal = self._intent_signal(intent_result)
 
@@ -909,9 +830,9 @@ class MultimodalFusionService:
         signals: List[tuple[str, Dict[str, Any]]] = []
 
         if nlp_signal is not None:
-            signals.append(("NLP Security Analysis", nlp_signal))
+            signals.append(("NLP Intelligence", nlp_signal))
         if visual_signal is not None:
-            signals.append(("Visual Phishing Intelligence", visual_signal))
+            signals.append(("Visual Intelligence", visual_signal))
         if url_signal is not None:
             signals.append(("URL Intelligence", url_signal))
         if intent_signal is not None:
@@ -937,6 +858,7 @@ class MultimodalFusionService:
                 decision="Unknown",
                 agreement="No Model Signal",
                 dominant_modality="None",
+                trusted_hosting_platform=trusted_hosting,
                 summary="No trained-model security signal was available for multimodal fusion.",
             )
 
@@ -1032,65 +954,6 @@ class MultimodalFusionService:
         risk_level = self._risk_level(risk_score)
         confidence = self._clamp(dominant_signal["confidence"])
 
-        print("\n========== MULTIMODAL FUSION ==========")
-
-        print("NLP:")
-        print(
-            nlp_signal["label"],
-            f"({nlp_signal['confidence']:.2f}%)"
-        ) if nlp_signal else print("None")
-
-        print("\nVisual:")
-        print(
-            visual_signal["label"],
-            f"({visual_signal['confidence']:.2f}%)"
-        ) if visual_signal else print("None")
-
-        print("\nURL:")
-        print(
-            url_signal["label"],
-            f"({url_signal['confidence']:.2f}%)"
-        ) if url_signal else print("None")
-        
-        print("\nDomain Verification:")
-        if domain_signal and domain_signal.get("official_domain"):
-            provider_type = domain_signal.get("provider_type", "Unknown")
-            official_provider = domain_signal.get("official_provider", "Unknown")
-            if domain_signal.get("user_generated_content"):
-                print(f"{provider_type} - {official_provider} (User Generated Content)")
-            else:
-                print(f"{provider_type} - {official_provider}")
-        else:
-            print("None")
-
-        print("\nCommunication Intent:")
-        print(
-            intent_signal["label"],
-            f"(Context Confidence: {intent_signal['confidence']:.2f}%)",
-            "-",
-            intent_signal.get("context")
-        ) if intent_signal else print("None")
-
-        print("\nVoice:")
-        print(
-            voice_signal["label"],
-            f"({voice_signal['confidence']:.2f}%)"
-        ) if voice_signal else print("None")
-
-        print("\n--------------------------------------")
-        print("Agreement           :", agreement)
-        print("Dominant Modality   :", dominant_modality)
-        print("Override Applied    :", override_applied)
-        if override_applied:
-            print(
-                f"Reason              : Evidence-Based Consensus (Score: {consensus_score}/7)"
-            )
-        print("Final Decision      :", decision)
-        print("Risk Score          :", f"{risk_score:.2f}")
-        print("Risk Level          :", risk_level)
-        print("Final Confidence    :", f"{confidence:.2f}%")
-        print("======================================\n")
-
         summary = self._summary(
             decision=decision,
             agreement=agreement,
@@ -1110,6 +973,13 @@ class MultimodalFusionService:
             agreement=agreement,
             dominant_modality=dominant_modality,
             override_applied=override_applied,
+            trusted_hosting_platform=trusted_hosting,
+
+            hosting_provider=(
+                domain_signal.get("official_provider")
+                if domain_signal
+                else None
+            ),
             nlp_risk=round(nlp_signal["risk"], 4) if nlp_signal else None,
             visual_risk=round(visual_signal["risk"], 4) if visual_signal else None,
             url_risk=round(url_signal["risk"], 4) if url_signal else None,

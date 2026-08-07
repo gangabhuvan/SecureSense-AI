@@ -33,20 +33,15 @@ class DomainVerificationService:
             "user_generated": False,
         },
         "docs.google.com": {
-            "provider": "Google Docs",
-            "provider_type": "Document Hosting",
+            "provider": "Google",
+            "service": "Google Docs / Google Forms",
+            "provider_type": "Document & Form Hosting",
             "trust_category": "Hosting",
             "user_generated": True,
         },
         "drive.google.com": {
             "provider": "Google Drive",
             "provider_type": "Cloud Storage",
-            "trust_category": "Hosting",
-            "user_generated": True,
-        },
-        "forms.google.com": {
-            "provider": "Google Forms",
-            "provider_type": "Form Hosting",
             "trust_category": "Hosting",
             "user_generated": True,
         },

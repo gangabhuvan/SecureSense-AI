@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.api.auth import router as auth_router
 from app.api.analysis import router as analysis_router
 from app.database.database import Base, engine
 from app.api import url
@@ -48,7 +49,7 @@ app.add_middleware(
 # ==========================================================
 # API Routes
 # ==========================================================
-
+app.include_router(auth_router)
 app.include_router(upload_router)
 app.include_router(dashboard_router)
 app.include_router(analysis_router)
@@ -66,5 +67,7 @@ app.include_router(reports_router)
 @app.get("/")
 def root():
     return {
-        "message": "Welcome to SecureSense AI 🚀"
+        "application": "SecureSense AI",
+        "version": "1.0.0",
+        "status": "operational",
     }

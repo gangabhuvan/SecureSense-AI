@@ -18,7 +18,10 @@ Pipeline:
       ↓
     Financial Communication Passport (FCP)
 """
+from fastapi import APIRouter, Depends, HTTPException
 
+from app.core.auth import get_current_user
+from app.database.models import User
 from typing import Any, Dict, List
 
 from fastapi import APIRouter, HTTPException
@@ -99,6 +102,8 @@ class URLAnalysisResponse(BaseModel):
     label: str
     class_id: int
 
+    domain_verification: Dict[str, Any]
+
     confidence: float
     confidence_percent: float
 
@@ -148,6 +153,7 @@ class URLBatchAnalysisResponse(BaseModel):
 )
 def analyse_url(
     request: URLAnalysisRequest,
+    current_user: User = Depends(get_current_user),
 ):
     """
     Analyse a URL using the frozen SecureSense 17-feature
@@ -419,6 +425,7 @@ def analyse_url(
 )
 def analyse_urls(
     request: URLBatchAnalysisRequest,
+    current_user: User = Depends(get_current_user),
 ):
     """
     Analyse multiple URLs in one request.

@@ -19,6 +19,7 @@ from fastapi import (
     Depends,
     HTTPException,
 )
+from app.core.auth import get_current_user
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
@@ -27,6 +28,7 @@ from app.database.models import (
     Communication,
     EELEntry,
     STGObservation,
+    User,
 )
 from app.services.report_service import (
     report_service,
@@ -71,6 +73,7 @@ Report generation is read-only and does not rerun AI models.
 def download_security_report(
     communication_id: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Generate a PDF report for one persisted communication.

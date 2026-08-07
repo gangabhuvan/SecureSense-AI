@@ -137,6 +137,8 @@ class TrustService:
             VoiceAuthenticityResult | None
         ) = None,
         analysis_available: bool = True,
+        trusted_hosting_platform: bool = False,
+        hosting_provider: str | None = None,
     ) -> FinancialCommunicationPassport:
         """
         Generate the final Financial Communication Passport.
@@ -356,6 +358,8 @@ class TrustService:
                 ),
                 stg_context=stg_context,
                 analysis_available=analysis_available,
+                trusted_hosting_platform=trusted_hosting_platform,
+                hosting_provider=hosting_provider,
             )
         )
 
@@ -941,7 +945,7 @@ class TrustService:
         #
         # The original risk/trust scores remain available in
         # the detailed STG API response.
-                # Preserve STG's original risk and trust contributions
+        # Preserve STG's original risk and trust contributions
         # independently.
         #
         # These values represent different contextual
@@ -1020,7 +1024,7 @@ class TrustService:
                 )
             ),
 
-                        risk_contribution=round(
+            risk_contribution=round(
                 risk_contribution,
                 4,
             ),
@@ -1142,7 +1146,9 @@ class TrustService:
             SecuritiesTrustGraphContext
             | None
         ) = None,
-    analysis_available: bool = True,
+        analysis_available: bool = True,
+        trusted_hosting_platform: bool = False,
+        hosting_provider: str | None = None,
     ) -> str:
         """
         Generate the final user-facing recommendation using:
@@ -1278,6 +1284,18 @@ class TrustService:
                     "on this communication."
                 )
 
+            if trusted_hosting_platform:
+
+                provider = hosting_provider or "hosting"
+
+                return (
+                    f"The communication is hosted on the official {provider} platform, "
+                    "which supports user-generated content. "
+                    "Although the hosting infrastructure is trusted, "
+                    "the detected content contains strong phishing indicators. "
+                    "Do not submit credentials, transfer money or trust the page "
+                    "without independently verifying the sender."
+                )
             return (
                 "Do not transfer money, scan QR codes or share "
                 "credentials. The communication contains strong "
@@ -1323,6 +1341,16 @@ class TrustService:
                     "carefully before taking financial action."
                 )
 
+            if trusted_hosting_platform:
+
+                provider = hosting_provider or "hosting"
+
+                return (
+                    f"The communication is hosted on the official {provider} platform "
+                    "which supports user-generated content. "
+                    "Review the hosted content carefully and verify the sender "
+                    "before taking financial action."
+                )
             return (
                 "Verify the sender independently and review the "
                 "communication carefully before taking any "
@@ -1377,6 +1405,18 @@ class TrustService:
                 verification_status
                 == "Insufficient Data"
             ):
+                if trusted_hosting_platform:
+
+                    provider = hosting_provider or "hosting"
+
+                    return (
+                        f"The communication is hosted on the official {provider} platform, "
+                        "which supports user-generated content. "
+                        "Infrastructure authenticity has been verified, "
+                        "but the hosted content may have been created by any user. "
+                        "Verify the sender before submitting personal information, "
+                        "opening shared documents or completing forms."
+                    )
                 return (
                     "The communication has a low detected risk, "
                     "but there is insufficient sender metadata "

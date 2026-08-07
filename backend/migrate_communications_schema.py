@@ -20,7 +20,7 @@ def main():
     try:
         cursor = conn.cursor()
 
-        print("=== COMMUNICATIONS SCHEMA MIGRATION ===")
+
 
         # --------------------------------------------------
         # 1. Pre-migration count
@@ -30,7 +30,7 @@ def main():
             "SELECT COUNT(*) FROM communications"
         ).fetchone()[0]
 
-        print("Rows before migration:", old_count)
+    
 
         # --------------------------------------------------
         # 2. Start explicit transaction
@@ -130,7 +130,7 @@ def main():
             "SELECT COUNT(*) FROM communications_new"
         ).fetchone()[0]
 
-        print("Rows copied:", copied_count)
+    
 
         if copied_count != old_count:
             raise RuntimeError(
@@ -187,12 +187,10 @@ def main():
 
         conn.commit()
 
-        print("Rows after migration:", final_count)
-        print("Migration committed successfully.")
+
 
     except Exception:
         conn.rollback()
-        print("Migration failed. Transaction rolled back.")
         raise
 
     finally:

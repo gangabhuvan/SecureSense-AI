@@ -67,9 +67,6 @@ class AASISTPredictor(BaseVoiceDetector):
         if self.loaded:
             return
 
-        print(
-            "Loading Spectra-AASIST3..."
-        )
 
         model_file = hf_hub_download(
             repo_id=MODEL_ID,
@@ -99,9 +96,6 @@ class AASISTPredictor(BaseVoiceDetector):
 
         self.loaded = True
 
-        print(
-            "Spectra-AASIST3 Loaded."
-        )
 
     # =====================================================
     # Audio preprocessing

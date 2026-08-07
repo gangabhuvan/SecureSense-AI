@@ -24,9 +24,13 @@ from typing import Dict, List
 
 from fastapi import (
     APIRouter,
+    Depends,
     HTTPException,
     status,
 )
+
+from app.core.auth import get_current_user
+from app.database.models import User
 from pydantic import BaseModel, Field
 
 from app.ai.nlp.predictor import predict_email
@@ -253,6 +257,8 @@ def _calculate_risk_score(
 )
 def predict_text(
     request: NLPAnalysisRequest,
+    current_user: User = Depends(get_current_user),
+    
 ) -> NLPAnalysisResponse:
     """
     Analyse supplied text using the complete SecureSense

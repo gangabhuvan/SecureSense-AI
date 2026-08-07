@@ -24,10 +24,13 @@ from typing import Any, Dict, Optional
 
 from fastapi import (
     APIRouter,
+    Depends,
     File,
     HTTPException,
     UploadFile,
 )
+from app.core.auth import get_current_user
+from app.database.models import User
 from PIL import Image, UnidentifiedImageError
 from pydantic import BaseModel
 
@@ -142,6 +145,7 @@ class VisualAnalysisResponse(BaseModel):
 )
 async def analyse_visual(
     file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Analyse a website screenshot using the reusable SecureSense

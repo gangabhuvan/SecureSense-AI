@@ -7,8 +7,11 @@ import {
   NavLink,
   Outlet,
   useLocation,
+  useNavigate,
   useParams,
 } from "react-router-dom";
+
+import { useAuth } from "../context/AuthContext";
 
 import {
   BarChart3,
@@ -27,7 +30,7 @@ import {
 const NAV_ITEMS = [
   {
     label: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: LayoutDashboard,
   },
   {
@@ -83,7 +86,7 @@ function getCommunicationId(pathname) {
 }
 
 function getCurrentPage(pathname) {
-  if (pathname === "/") {
+  if (pathname === "/dashboard") {
     return "Dashboard";
   }
 
@@ -102,6 +105,15 @@ function getCurrentPage(pathname) {
 export default function MainLayout() {
   const location = useLocation();
   const params = useParams();
+
+  const navigate = useNavigate();
+
+  const {
+    user,
+    logout,
+    loading,
+    isAuthenticated,
+  } = useAuth();
 
   const [
     mobileNavigationOpen,
@@ -134,7 +146,7 @@ export default function MainLayout() {
 
   const isItemActive = (item) => {
     if (item.path === "/") {
-      return location.pathname === "/";
+      return location.pathname === "/dashboard";
     }
 
     return (
@@ -194,6 +206,19 @@ export default function MainLayout() {
       );
     };
   }, [mobileNavigationOpen]);
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      navigate("/login", {
+        replace: true,
+      });
+    }
+
+  }, [
+    loading,
+    isAuthenticated,
+    navigate,
+  ]);
 
   const navigation = (
     <>
@@ -302,6 +327,39 @@ export default function MainLayout() {
             </div>
           </div>
         )}
+
+        {user && (
+  <div
+    style={{
+      padding: "16px",
+      borderTop: "1px solid rgba(255,255,255,0.08)",
+    }}
+  >
+    <div
+      style={{
+        fontSize: "13px",
+        marginBottom: "10px",
+      }}
+    >
+      Signed in as
+      <br />
+      <strong>{user.username}</strong>
+    </div>
+
+    <button
+      onClick={logout}
+      style={{
+        width: "100%",
+        padding: "10px",
+        borderRadius: "8px",
+        border: "none",
+        cursor: "pointer",
+      }}
+    >
+      Logout
+    </button>
+  </div>
+)}
 
         <div className="sidebar-footer">
           <div className="sidebar-product-status">

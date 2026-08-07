@@ -1,8 +1,8 @@
 import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
+    BrowserRouter,
+    Navigate,
+    Route,
+    Routes,
 } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
@@ -17,150 +17,207 @@ import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
+import Landing from "./pages/Landing";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
 
-        {/* =================================================
-            Main SecureSense Application
-            ================================================= */}
+    return (
 
-        <Route
-          path="/"
-          element={<MainLayout />}
-        >
+        <BrowserRouter>
 
-          {/* Dashboard */}
-          <Route
-            index
-            element={<Dashboard />}
-          />
+            <Routes>
 
+                {/* ================================================
+                    Public Pages
+                ================================================= */}
 
-          {/* ===============================================
-              Real-Time Communication Analysis
-              =============================================== */}
+                <Route
+                    path="/"
+                    element={<Landing />}
+                />
 
-          <Route
-            path="upload"
-            element={<Upload />}
-          />
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
 
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
 
-          {/* Analysis landing page */}
-          <Route
-            path="analysis"
-            element={<Analysis />}
-          />
+                {/* ================================================
+                    Protected SecureSense Platform
+                ================================================= */}
 
-          {/* Individual investigation */}
-          <Route
-            path="analysis/:communicationId"
-            element={<Analysis />}
-          />
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
 
+                    <Route
+                        index
+                        element={<Dashboard />}
+                    />
 
-          {/* ===============================================
-              Financial Communication Passport
-              =============================================== */}
+                </Route>
 
-          <Route
-            path="passport"
-            element={<Passport />}
-          />
+                <Route
+                    path="/upload"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route
+                        index
+                        element={<Upload />}
+                    />
+                </Route>
 
-          <Route
-            path="passport/:communicationId"
-            element={<Passport />}
-          />
+                <Route
+                    path="/analysis"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route
+                        index
+                        element={<Analysis />}
+                    />
 
+                    <Route
+                        path=":communicationId"
+                        element={<Analysis />}
+                    />
+                </Route>
 
-          {/* ===============================================
-              Securities Trust Graph
-              =============================================== */}
+                <Route
+                    path="/passport"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route
+                        index
+                        element={<Passport />}
+                    />
 
-          <Route
-            path="trust-graph"
-            element={<TrustGraph />}
-          />
+                    <Route
+                        path=":communicationId"
+                        element={<Passport />}
+                    />
+                </Route>
 
-          <Route
-            path="trust-graph/:communicationId"
-            element={<TrustGraph />}
-          />
+                <Route
+                    path="/trust-graph"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route
+                        index
+                        element={<TrustGraph />}
+                    />
 
+                    <Route
+                        path=":communicationId"
+                        element={<TrustGraph />}
+                    />
+                </Route>
 
-          {/* ===============================================
-              Explainable Evidence Ledger
-              =============================================== */}
+                <Route
+                    path="/ledger"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route
+                        index
+                        element={<EvidenceLedger />}
+                    />
 
-          <Route
-            path="ledger"
-            element={<EvidenceLedger />}
-          />
+                    <Route
+                        path=":communicationId"
+                        element={<EvidenceLedger />}
+                    />
+                </Route>
 
-          <Route
-            path="ledger/:communicationId"
-            element={<EvidenceLedger />}
-          />
+                <Route
+                    path="/reports"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route
+                        index
+                        element={<Reports />}
+                    />
 
+                    <Route
+                        path=":communicationId"
+                        element={<Reports />}
+                    />
+                </Route>
 
-          {/* ===============================================
-              Reports
-              =============================================== */}
+                <Route
+                    path="/settings"
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route
+                        index
+                        element={<Settings />}
+                    />
+                </Route>
 
-          <Route
-    path="reports"
-    element={<Reports />}
-/>
+                <Route
+                    path="/investigate"
+                    element={
+                        <Navigate
+                            to="/upload"
+                            replace
+                        />
+                    }
+                />
 
-<Route
-    path="reports/:communicationId"
-    element={<Reports />}
-/>
+                {/* ================================================
+                    Unknown Route
+                ================================================= */}
 
+                <Route
+                    path="*"
+                    element={<NotFound />}
+                />
 
-          {/* ===============================================
-              Platform Settings
-              =============================================== */}
+            </Routes>
 
-          <Route
-            path="settings"
-            element={<Settings />}
-          />
+        </BrowserRouter>
 
+    );
 
-          {/* ===============================================
-              Compatibility / Convenience Routes
-              =============================================== */}
-
-          <Route
-            path="investigate"
-            element={
-              <Navigate
-                to="/upload"
-                replace
-              />
-            }
-          />
-
-        </Route>
-
-
-        {/* =================================================
-            Unknown Route
-            ================================================= */}
-
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
-
-      </Routes>
-    </BrowserRouter>
-  );
 }
 
 export default App;

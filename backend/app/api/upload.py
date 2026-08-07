@@ -85,6 +85,8 @@ Pipeline
     API Response
 """
 from __future__ import annotations
+from app.core.auth import get_current_user
+from app.database.models import User
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
@@ -534,6 +536,10 @@ async def upload_file(
 
     db: Session = Depends(
         get_db
+    ),
+
+    current_user: User = Depends(
+        get_current_user
     ),
 ):
     """
@@ -1387,6 +1393,13 @@ async def upload_file(
                 analysis_available=(
                     analysis_available
                 ),
+                trusted_hosting_platform=(
+                    fusion_result.trusted_hosting_platform
+                ),
+
+                hosting_provider=(
+                    fusion_result.hosting_provider
+                ),
             )
         )
 
@@ -2074,6 +2087,9 @@ def get_upload_history_endpoint(
     db: Session = Depends(
         get_db
     ),
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
     """
     Get communication history with optional filtering.
@@ -2108,6 +2124,9 @@ def get_document(
     db: Session = Depends(
         get_db
     ),
+    current_user: User = Depends(
+        get_current_user
+    )
 ):
     """
     Get a communication by communication ID.

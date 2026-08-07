@@ -6,7 +6,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from app.database.models import Communication
-
+from uuid import uuid4
 UPLOAD_DIR = "uploads"
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -14,14 +14,15 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 def generate_communication_id():
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    return f"COMM-{timestamp}"
+    return f"COMM-{timestamp}-{uuid4().hex[:6].upper()}"
 
 
 def save_uploaded_file(file, db: Session):
     communication_id = generate_communication_id()
 
-    filename = file.filename
-    extension = filename.split(".")[-1]
+    filename = os.path.basename(file.filename)
+    _, extension = os.path.splitext(filename)
+    extension = extension.lstrip(".").lower()
 
     saved_filename = f"{communication_id}.{extension}"
 
