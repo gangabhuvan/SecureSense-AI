@@ -940,24 +940,3 @@ Information Science & Engineering
 Nitte Meenakshi Institute of Technology
 
 ---
-
-# ⭐ Acknowledgements
-
-This project was developed as part of the **SEBI Hackathon** to explore how explainable artificial intelligence, trust intelligence, and multi-modal security analysis can improve the investigation of financial communications.
-
-Special thanks to the open-source community and the developers of:
-
-- FastAPI
-- React
-- PyTorch
-- Hugging Face Transformers
-- XGBoost
-- Sentence Transformers
-- SHAP
-- OpenCV
-- EasyOCR
-- Whisper
-
-whose tools and research have enabled rapid innovation in trustworthy AI systems.
-
----
