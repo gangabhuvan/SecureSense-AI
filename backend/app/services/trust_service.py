@@ -431,6 +431,24 @@ class TrustService:
                     or 0
                 ),
 
+                nodes=list(
+                    getattr(
+                        stg_result.context,
+                        "nodes",
+                        [],
+                    )
+                    or []
+                ),
+
+                edges=list(
+                    getattr(
+                        stg_result.context,
+                        "edges",
+                        [],
+                    )
+                    or []
+                ),
+
                 relationship_context=(
                     TrustService._build_relationship_context(
                         getattr(
@@ -440,7 +458,6 @@ class TrustService:
                         )
                     )
                 ),
-
                 evidence_ids=list(
                     dict.fromkeys(
                         stg_result.evidence_ids
@@ -531,6 +548,52 @@ class TrustService:
                             0,
                         )
                     )
+                ),
+
+                nodes=(
+                    list(
+                        (
+                            stg_result.get(
+                                "context",
+                                {},
+                            )
+                            or {}
+                        ).get(
+                            "nodes",
+                            [],
+                        )
+                    )
+                    if isinstance(
+                        stg_result.get(
+                            "context",
+                            {},
+                        ),
+                        dict,
+                    )
+                    else []
+                ),
+
+                edges=(
+                    list(
+                        (
+                            stg_result.get(
+                                "context",
+                                {},
+                            )
+                            or {}
+                        ).get(
+                            "edges",
+                            [],
+                        )
+                    )
+                    if isinstance(
+                        stg_result.get(
+                            "context",
+                            {},
+                        ),
+                        dict,
+                    )
+                    else []
                 ),
 
                 relationship_context=(
@@ -1418,10 +1481,10 @@ class TrustService:
                         "opening shared documents or completing forms."
                     )
                 return (
-                    "The communication has a low detected risk, "
-                    "but there is insufficient sender metadata "
-                    "for authenticity verification. Continue with "
-                    "normal caution."
+                    "This communication shows low detected risk, "
+                    "but available evidence was insufficient to "
+                    "independently establish its authenticity. "
+                    "Continue with normal caution."
                 )
 
             return (

@@ -300,7 +300,7 @@ export default function MainLayout() {
             </div>
 
             <div className="sidebar-brand-subtitle">
-              Trust Intelligence
+              Multi-Modal Explainable Trust Intelligence Platform
             </div>
           </div>
         </div>

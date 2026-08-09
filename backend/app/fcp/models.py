@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
-
+from app.stg.graph_models import GraphNode, GraphEdge
 
 class VerificationStatus(BaseModel):
     """
@@ -280,7 +280,8 @@ class SecuritiesTrustGraphContext(BaseModel):
     confidence: float = 0.0
 
     entities_analysed: int = 0
-
+    nodes: List[GraphNode] = Field(default_factory=list)
+    edges: List[GraphEdge] = Field(default_factory=list)
     # --------------------------------------------------------
     # Relationship-Derived Context
     # --------------------------------------------------------

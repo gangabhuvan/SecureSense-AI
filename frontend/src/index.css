@@ -1643,15 +1643,15 @@ body {
 }
 
 .sidebar-brand-subtitle {
-  margin-top: 4px;
+  margin-top: 1px;
 
   color: #7183a3;
 
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 500;
 
   text-transform: uppercase;
-  letter-spacing: 1.05px;
+  letter-spacing: 1.00px;
 }
 
 /* ---------------- SECTION ---------------- */
@@ -14287,4 +14287,535 @@ html {
     margin: 0 auto;
     box-shadow:
         0 24px 60px rgba(15,23,42,.10);
+}
+.trust-destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.trust-destination-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
+.trust-destination-card .context-note {
+  flex: 1;
+  margin-top: 18px;
+  line-height: 1.65;
+}
+
+.trust-destination-card .investigation-secondary-link {
+  margin-top: 24px;
+  align-self: flex-start;
+}
+
+@media (max-width: 1100px) {
+  .trust-destinations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   SECURESENSE AI — FINAL LAYOUT ALIGNMENT OVERRIDES
+   Append at the very end of index.css
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. ANALYSIS PAGE
+   Investigation Metrics
+   Risk Level | Model Agreement | Trust Graph
+   Keep all three cards centered as one balanced row
+   --------------------------------------------------------- */
+
+.investigation-metrics-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 910px;
+  margin: 18px auto;
+}
+
+
+/* ---------------------------------------------------------
+   2. ANALYSIS PAGE
+   AI Security Signals / Multimodal Intelligence
+
+   NLP        | Vision       | Voice
+                  URL
+
+   The fourth card (URL Intelligence) is positioned
+   directly underneath Visual Intelligence.
+   --------------------------------------------------------- */
+
+.module-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Center the fourth module beneath the middle card */
+.module-grid > .security-module-card:nth-child(4) {
+  grid-column: 2;
+}
+
+
+/* ---------------------------------------------------------
+   3. UPLOAD PAGE
+   Intelligence Strip
+
+   NLP | VISION | VOICE | URL | REASONING
+
+   Keep all five intelligence categories in ONE
+   professional horizontal row.
+   --------------------------------------------------------- */
+
+.intelligence-strip {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.intelligence-strip > div {
+  min-width: 0;
+}
+
+.intelligence-strip strong {
+  display: block;
+  line-height: 1.4;
+}
+
+
+/* ---------------------------------------------------------
+   4. RESPONSIVE SAFETY
+   Preserve the layout on smaller screens.
+   --------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+
+  .investigation-metrics-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 100%;
+  }
+
+  .module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .module-grid > .security-module-card:nth-child(4) {
+    grid-column: auto;
+  }
+
+  .intelligence-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+@media (max-width: 760px) {
+
+  .investigation-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .module-grid > .security-module-card:nth-child(4) {
+    grid-column: auto;
+  }
+
+  .intelligence-strip {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   SECURESENSE AI — STG VISUAL GRAPH
+   ========================================================= */
+
+.stg-visual-graph {
+  width: 100%;
+  margin-top: 18px;
+  overflow: hidden;
+
+  border: 1px solid #dbe3ee;
+  border-radius: 12px;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      #ffffff 0%,
+      #f8fafc 72%,
+      #f1f5f9 100%
+    );
+}
+
+.stg-visual-graph-svg {
+  display: block;
+  width: 100%;
+  min-height: 430px;
+}
+
+.stg-visual-edge line {
+  stroke: #94a3b8;
+  stroke-width: 1.6;
+  stroke-dasharray: 5 4;
+  opacity: 0.9;
+}
+
+.stg-edge-arrow {
+  fill: #64748b;
+}
+
+.stg-edge-label-bg {
+  fill: #ffffff;
+  stroke: #cbd5e1;
+  stroke-width: 1;
+}
+
+.stg-edge-label {
+  fill: #475569;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.stg-node-circle {
+  fill: #ffffff;
+  stroke: #cbd5e1;
+  stroke-width: 1.5;
+}
+
+.stg-node-inner {
+  fill: #f8fafc;
+  stroke: transparent;
+}
+
+.stg-node-type {
+  fill: #64748b;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.stg-node-label {
+  fill: #0f172a;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.stg-node-communication
+  .stg-node-circle {
+  stroke: #2563eb;
+}
+
+.stg-node-communication
+  .stg-node-inner {
+  fill: #eff6ff;
+}
+
+.stg-node-url
+  .stg-node-circle {
+  stroke: #7c3aed;
+}
+
+.stg-node-url
+  .stg-node-inner {
+  fill: #f5f3ff;
+}
+
+.stg-node-identity
+  .stg-node-circle {
+  stroke: #0891b2;
+}
+
+.stg-node-identity
+  .stg-node-inner {
+  fill: #ecfeff;
+}
+
+.stg-node-entity
+  .stg-node-circle {
+  stroke: #64748b;
+}
+
+.stg-node-entity
+  .stg-node-inner {
+  fill: #f8fafc;
+}
+
+
+/* ---------------------------------------------------------
+   Legend
+   --------------------------------------------------------- */
+
+.stg-graph-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 18px;
+
+  padding: 12px 16px;
+
+  border-top: 1px solid #e2e8f0;
+
+  background: #ffffff;
+
+  color: #64748b;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.stg-graph-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stg-legend-dot {
+  width: 8px;
+  height: 8px;
+
+  display: inline-block;
+
+  border-radius: 50%;
+}
+
+.stg-legend-communication {
+  background: #2563eb;
+}
+
+.stg-legend-url {
+  background: #7c3aed;
+}
+
+.stg-legend-identity {
+  background: #0891b2;
+}
+
+.stg-legend-entity {
+  background: #64748b;
+}
+
+
+/* ---------------------------------------------------------
+   Relationship context cards below graph
+   --------------------------------------------------------- */
+
+.stg-context-list {
+  margin-top: 16px;
+}
+
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 760px) {
+
+  .stg-visual-graph-svg {
+    min-height: 360px;
+  }
+
+  .stg-graph-legend {
+    justify-content: flex-start;
+    gap: 10px 14px;
+  }
+
+}
+
+.passport-page .passport-credential-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.passport-page .passport-credential-grid > div {
+  min-width: 0;
+  min-height: 82px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+
+.passport-page .passport-credential-grid > div:nth-child(2n) {
+  border-right: 0;
+}
+
+
+.passport-page .passport-credential-grid > div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+
+/* ---------------------------------------------------------
+   2. Trust Profile / Auditability destination cards
+   Stack title + description vertically
+   --------------------------------------------------------- */
+
+.passport-page .passport-module-link-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 16px 18px;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+
+  background: rgba(255, 255, 255, 0.012);
+}
+
+
+/* Text side */
+.passport-page .passport-module-link-card > div:first-child {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+/* Module title */
+.passport-page .passport-module-link-card > div:first-child strong {
+  display: block;
+
+  margin: 0;
+
+  color: var(--text-primary);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+
+/* Module description */
+.passport-page .passport-module-link-card > div:first-child span {
+  display: block;
+
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+
+/* Link */
+.passport-page .passport-module-link-card .investigation-secondary-link {
+  flex: 0 0 auto;
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   3. Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 760px) {
+
+  .passport-page .passport-credential-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .passport-page .passport-credential-grid > div {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .passport-page .passport-credential-grid > div:last-child {
+    border-bottom: 0;
+  }
+
+  .passport-page .passport-module-link-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .passport-page .passport-module-link-card .investigation-secondary-link {
+    margin-top: 2px;
+  }
+}
+/* =========================================================
+   SECURESENSE AI — DASHBOARD SNAPSHOT ALIGNMENT FIX
+   ========================================================= */
+
+/* 1. Expand the grid to fit all 5 cards in a single horizontal row */
+.dashboard-intelligence-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+}
+
+/* 2. Align the "Open Full Investigation" link to the bottom right */
+.dashboard-view-reports {
+  justify-content: flex-end !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+}
+
+/* 3. Maintain responsive wrapping for smaller viewports */
+@media (max-width: 1200px) {
+  .dashboard-intelligence-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 850px) {
+  .dashboard-intelligence-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-intelligence-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Optional: Keep it aligned right on mobile, or swap to center if preferred */
+  .dashboard-view-reports {
+    justify-content: flex-end !important; 
+  }
+}
+/* =========================================================
+   SECURESENSE AI — DASHBOARD LINK ALIGNMENT FIX
+   ========================================================= */
+
+/* Force the link container to span all 5 columns if it's inside the grid, 
+   and push the content to the bottom right */
+.dashboard-view-reports {
+  grid-column: 1 / -1 !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  width: 100% !important;
+  margin-top: 20px !important;
+}
+/* =========================================================
+   SECURESENSE AI — PLATFORM MODULES GRID ALIGNMENT (4x2)
+   ========================================================= */
+
+/* Force 4 columns on desktop viewports */
+.settings-modules-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+/* Gracefully scale down to 3 columns on medium-large screens */
+@media (max-width: 1300px) {
+  .settings-modules-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Scale down to 2 columns on tablets */
+@media (max-width: 1000px) {
+  .settings-modules-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Stack into 1 column on mobile devices */
+@media (max-width: 700px) {
+  .settings-modules-grid {
+    grid-template-columns: 1fr !important;
+  }
 }

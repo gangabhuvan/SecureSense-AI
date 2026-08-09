@@ -1419,17 +1419,12 @@ class SecuritiesTrustGraphEngine:
             # It NEVER creates ENTITY_SECURITY observations.
 
             context.relationship_risk = [
-                relationship_context
-                for relationship_context in (
-                    self.get_relationship_risk_context(
-                        db=db,
-                        node_id=node.node_id,
-                    )
-                    for node in unique_entity_nodes
+                self.get_relationship_risk_context(
+                    db=db,
+                    node_id=node.node_id,
                 )
-                if relationship_context.available
+                for node in unique_entity_nodes
             ]
-
             # =================================================
             # Communication-Level Graph Intelligence
             # =================================================

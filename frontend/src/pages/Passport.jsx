@@ -4,8 +4,6 @@ import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
-  BadgeCheck,
-  Building2,
   Check,
   CheckCircle2,
   CircleHelp,
@@ -13,7 +11,6 @@ import {
   Fingerprint,
   Globe2,
   KeyRound,
-  Link2,
   Mail,
   Network,
   Phone,
@@ -72,10 +69,6 @@ function formatDate(value) {
   }
 
   return date.toLocaleString();
-}
-
-function yesNo(value) {
-  return value ? "Yes" : "No";
 }
 
 function riskTone(level) {
@@ -319,65 +312,28 @@ export default function Passport() {
     );
   }
 
-  const passport = communication?.passport;
-  const communicationIntent =
-    communication?.communication_intent || {};
-
-  if (!passport) {
-    return (
-      <div className="investigation-error-page">
-        <ShieldQuestion size={38} />
-
-        <h2>No passport available</h2>
-
-        <p>
-          This communication does not currently contain a persisted
-          Financial Communication Passport.
-        </p>
-
-        <Link
-          to={`/analysis/${encodeURIComponent(communicationId)}`}
-          className="investigation-primary-link"
-        >
-          <ArrowLeft size={15} />
-          Return to Analysis
-        </Link>
-      </div>
-    );
-  }
-
   /* =======================================================
-     Data
-     ======================================================= */
+   Data
+   ======================================================= */
+const passport = communication?.passport;
+const verification = passport.verification || {};
 
-  const verification = passport.verification || {};
-  const stg = passport.securities_trust_graph || {};
-  const evidence = passport.evidence || {};
+const threatCategories = passport.threat_categories || [];
+const aiFindings = passport.ai_manipulation_findings || [];
 
-  const threatCategories = passport.threat_categories || [];
-  const aiFindings = passport.ai_manipulation_findings || [];
+const tone = riskTone(passport.risk_level);
+const verifyTone = verificationTone(verification.status);
 
-  const modules = evidence.modules || [];
-  const evidenceIds = evidence.evidence_ids || [];
-  const ledgerIds = evidence.ledger_ids || [];
+const verifiedChecks = [
+  verification.official_domain,
+  verification.official_email,
+  verification.official_phone,
+  verification.official_qr,
+  verification.digital_signature,
+  verification.metadata_consistent,
+].filter(Boolean).length;
 
-  const tone = riskTone(passport.risk_level);
-  const verifyTone = verificationTone(verification.status);
-
-  const verifiedChecks = [
-    verification.official_domain,
-    verification.official_email,
-    verification.official_phone,
-    verification.official_qr,
-    verification.digital_signature,
-    verification.metadata_consistent,
-  ].filter(Boolean).length;
-
-  const totalVerificationChecks = 6;
-
-  const evidenceCount = evidenceIds.length;
-  const ledgerCount = ledgerIds.length;
-  const moduleCount = modules.length;
+const totalVerificationChecks = 6;
 
   /* =======================================================
      UI
@@ -518,91 +474,6 @@ export default function Passport() {
           </div>
         </div>
       )}
-
-      {/* ===================================================
-          Overview metrics
-          =================================================== */}
-
-      <div className="passport-metrics-grid">
-        <div className="passport-metric-card">
-          <div className="passport-metric-icon">
-            <Fingerprint size={18} />
-          </div>
-
-          <div>
-            <span>Sender Status</span>
-            <strong>
-              {passport.verified_sender
-                ? "Verified"
-                : "Unverified"}
-            </strong>
-
-            <small>
-              {passport.claimed_sender || "Unknown sender"}
-            </small>
-          </div>
-        </div>
-
-        <div className="passport-metric-card">
-          <div className="passport-metric-icon">
-            <BadgeCheck size={18} />
-          </div>
-
-          <div>
-            <span>Authenticity</span>
-
-            <strong>
-              {verification.status || "Unknown"}
-            </strong>
-
-            <small>
-              {verifiedChecks}/{totalVerificationChecks} verification
-              checks confirmed
-            </small>
-          </div>
-        </div>
-
-        <div className="passport-metric-card">
-          <div className="passport-metric-icon">
-            <Network size={18} />
-          </div>
-
-          <div>
-            <span>Trust Graph</span>
-
-            <strong>
-              {stg.classification || "Unknown"}
-            </strong>
-
-            <small>
-              {stg.reputation_available
-                ? "Historical reputation available"
-                : "No reputation history"}
-            </small>
-          </div>
-        </div>
-
-        <div className="passport-metric-card">
-          <div className="passport-metric-icon">
-            <FileKey2 size={18} />
-          </div>
-
-          <div>
-            <span>Evidence Provenance</span>
-
-            <strong>
-              {evidenceCount} Evidence Record
-              {evidenceCount === 1 ? "" : "s"}
-            </strong>
-
-            <small>
-              {moduleCount} intelligence module
-              {moduleCount === 1 ? "" : "s"}
-            </small>
-          </div>
-        </div>
-      </div>
-
       {/* ===================================================
           Passport identity
           =================================================== */}
@@ -641,29 +512,6 @@ export default function Passport() {
               {formatDate(passport.generated_at)}
             </strong>
           </div>
-
-          <div>
-            <span>Claimed Sender</span>
-            <strong>
-              {passport.claimed_sender || "Unknown"}
-            </strong>
-          </div>
-
-          <div>
-            <span>Sender Identity</span>
-
-            <strong
-              className={
-                passport.verified_sender
-                  ? "passport-value-safe"
-                  : "passport-value-warning"
-              }
-            >
-              {passport.verified_sender
-                ? "Verified"
-                : "Not independently verified"}
-            </strong>
-          </div>
         </div>
       </section>
 
@@ -675,7 +523,7 @@ export default function Passport() {
         <div className="investigation-section-heading">
           <div>
             <span>AUTHENTICITY VERIFICATION ENGINE (AVE)</span>
-            <h2>Sender & Channel Verification</h2>
+            <h2>Available Authenticity Checks</h2>
           </div>
 
           <span
@@ -701,16 +549,21 @@ export default function Passport() {
               <span>VERIFICATION CONFIDENCE</span>
 
               <strong>
-                {formatPercent(
-                  verification.verification_confidence
-                )}
-              </strong>
+  {verification.status === "Insufficient Data" ||
+   verification.verification_confidence == null
+    ? "Not available"
+    : formatPercent(
+        verification.verification_confidence
+      )}
+</strong>
 
               <small>
-                {passport.verified_sender
-                  ? "Sender identity independently verified."
-                  : "Sender identity has not been independently verified."}
-              </small>
+  {passport.verified_sender
+    ? "Sender identity independently verified."
+    : verification.status === "Insufficient Data"
+      ? "Insufficient independent evidence to verify the sender."
+      : "Sender identity has not been independently verified."}
+</small>
             </div>
           </div>
 
@@ -884,324 +737,71 @@ export default function Passport() {
       </section>
 
       {/* ===================================================
-    Communication Intelligence
-=================================================== */}
-
-{communicationIntent.security_intent && (
+    Trust Profile / STG
+    =================================================== */}
 
 <section className="investigation-section">
-
   <div className="investigation-section-heading">
-
     <div>
-
-      <span>COMMUNICATION INTELLIGENCE</span>
-
-      <h2>Semantic Communication Understanding</h2>
-
+      <span>TRUST PROFILE</span>
+      <h2>Securities Trust Graph</h2>
     </div>
 
-    <Building2 size={18} />
-
+    <Network size={18} />
   </div>
 
-  <div className="passport-credential-grid">
-
+  <div className="passport-module-link-card">
     <div>
-
-      <span>Detected Context</span>
-
-      <strong>
-        {communicationIntent.context || "Unknown"}
-      </strong>
-
+      <strong>Historical Entity Trust Intelligence</strong>
+      <span>
+        Explore entity relationships, historical reputation,
+        graph trust and graph risk in the dedicated Trust Graph.
+      </span>
     </div>
 
-    <div>
-
-      <span>Security Intent</span>
-
-      <strong>
-        {communicationIntent.security_intent}
-      </strong>
-
-    </div>
-
-    <div>
-
-      <span>Confidence</span>
-
-      <strong>
-        {formatPercent(
-          communicationIntent.confidence
-        )}
-      </strong>
-
-    </div>
-
-    <div>
-
-      <span>Risk Score</span>
-
-      <strong>
-        {formatPercent(
-          communicationIntent.risk_score
-        )}
-      </strong>
-
-    </div>
-
+    <Link
+      to={`/trust-graph/${encodeURIComponent(communicationId)}`}
+      className="investigation-secondary-link"
+    >
+      Explore Trust Graph
+      <ArrowRight size={14} />
+    </Link>
   </div>
-
-  {
-
-    communicationIntent.evidence?.length > 0 && (
-
-      <div className="passport-context-box">
-
-        <strong>
-          Communication Evidence
-        </strong>
-
-        <div className="entity-chip-list">
-
-          {
-
-            communicationIntent.evidence.map(
-
-              (item, index) => (
-
-                <span
-                  key={index}
-                  className="entity-chip"
-                >
-                  {item.feature}
-                </span>
-
-              )
-
-            )
-
-          }
-
-        </div>
-
-      </div>
-
-    )
-
-  }
-
 </section>
 
-)}
-
       {/* ===================================================
-          STG
-          =================================================== */}
+    Auditability / EEL
+    =================================================== */}
 
-      <section className="investigation-section">
-        <div className="investigation-section-heading">
-          <div>
-            <span>SECURITIES TRUST GRAPH (STG)</span>
-            <h2>Historical Entity Trust Context</h2>
-          </div>
+<section className="investigation-section">
+  <div className="investigation-section-heading">
+    <div>
+      <span>AUDITABILITY</span>
+      <h2>Explainable Evidence Ledger</h2>
+    </div>
 
-          <Network size={18} />
-        </div>
+    <FileKey2 size={18} />
+  </div>
 
-        <div className="passport-stg-layout">
-          <div className="passport-stg-score-card">
-            <div className="passport-stg-icon">
-              <Network size={24} />
-            </div>
+  <div className="passport-module-link-card">
+    <div>
+      <strong>Explainable Evidence Ledger</strong>
+      <span>
+        Inspect the evidence records, intelligence provenance
+        and audit trail generated by this investigation.
+      </span>
+    </div>
 
-            <span>GRAPH CLASSIFICATION</span>
+    <Link
+      to={`/ledger/${encodeURIComponent(communicationId)}`}
+      className="investigation-secondary-link"
+    >
+      Inspect Evidence Ledger
+      <ArrowRight size={14} />
+    </Link>
+  </div>
+</section>
 
-            <strong>
-              {stg.classification || "Unknown"}
-            </strong>
-
-            <small>
-              {stg.reputation_available
-                ? "Historical reputation context available"
-                : "Historical reputation unavailable"}
-            </small>
-          </div>
-
-          <div className="trust-detail-list">
-            <div>
-              <span>STG Available</span>
-              <strong>{yesNo(stg.available)}</strong>
-            </div>
-
-            <div>
-              <span>Reputation Available</span>
-              <strong>
-                {yesNo(stg.reputation_available)}
-              </strong>
-            </div>
-
-            <div>
-              <span>Entities Analysed</span>
-              <strong>{stg.entities_analysed ?? 0}</strong>
-            </div>
-
-            <div>
-              <span>Graph Risk Score</span>
-              <strong>
-                {formatScore(stg.graph_risk_score)}
-              </strong>
-            </div>
-
-            <div>
-              <span>Graph Trust Score</span>
-              <strong>
-                {formatScore(stg.graph_trust_score)}
-              </strong>
-            </div>
-
-            <div>
-              <span>Graph Confidence</span>
-              <strong>
-                {formatScore(stg.confidence)}
-              </strong>
-            </div>
-          </div>
-        </div>
-
-        {stg.summary && (
-          <div className="passport-context-box">
-            <strong>Graph Context</strong>
-            <p>{stg.summary}</p>
-          </div>
-        )}
-
-        {stg.contextual_role && (
-          <div className="passport-context-note">
-            <CircleHelp size={15} />
-            {stg.contextual_role}
-          </div>
-        )}
-
-        <Link
-          to={`/trust-graph/${encodeURIComponent(
-            communicationId
-          )}`}
-          className="investigation-secondary-link"
-        >
-          Explore Securities Trust Graph
-          <ArrowRight size={14} />
-        </Link>
-      </section>
-
-      {/* ===================================================
-          Evidence provenance
-          =================================================== */}
-
-      <section className="investigation-section">
-        <div className="investigation-section-heading">
-          <div>
-            <span>EXPLAINABLE EVIDENCE LEDGER (EEL)</span>
-            <h2>Evidence Provenance</h2>
-          </div>
-
-          <FileKey2 size={18} />
-        </div>
-
-        <div className="evidence-overview">
-          <div>
-            <strong>{evidenceCount}</strong>
-            <span>Evidence Records</span>
-          </div>
-
-          <div>
-            <strong>{ledgerCount}</strong>
-            <span>Ledger References</span>
-          </div>
-
-          <div>
-            <strong>{moduleCount}</strong>
-            <span>Intelligence Modules</span>
-          </div>
-        </div>
-
-        <div className="passport-severity-grid">
-          <div>
-            <span>Total Findings</span>
-            <strong>
-              {evidence.total_findings ?? 0}
-            </strong>
-          </div>
-
-          <div className="danger">
-            <span>High Severity</span>
-            <strong>
-              {evidence.high_severity ?? 0}
-            </strong>
-          </div>
-
-          <div className="warning">
-            <span>Medium Severity</span>
-            <strong>
-              {evidence.medium_severity ?? 0}
-            </strong>
-          </div>
-
-          <div className="safe">
-            <span>Low Severity</span>
-            <strong>
-              {evidence.low_severity ?? 0}
-            </strong>
-          </div>
-        </div>
-
-        {modules.length > 0 && (
-          <div className="passport-evidence-table">
-            {modules.map((module, index) => (
-              <div
-                className="passport-evidence-row"
-                key={`${module}-${index}`}
-              >
-                <div className="passport-evidence-module">
-                  <Check size={14} />
-
-                  <div>
-                    <strong>{module}</strong>
-                    <span>
-                      Auditable intelligence evidence
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <span>Evidence ID</span>
-                  <code>
-                    {evidenceIds[index] || "N/A"}
-                  </code>
-                </div>
-
-                <div>
-                  <span>Ledger ID</span>
-                  <code>
-                    {ledgerIds[index] || "N/A"}
-                  </code>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <Link
-          to={`/ledger/${encodeURIComponent(
-            communicationId
-          )}`}
-          className="investigation-secondary-link"
-        >
-          Inspect Explainable Evidence Ledger
-          <ArrowRight size={14} />
-        </Link>
-      </section>
 
       {/* ===================================================
           Passport footer
@@ -1235,15 +835,6 @@ export default function Passport() {
             Full Investigation
           </Link>
 
-          <Link
-            to={`/ledger/${encodeURIComponent(
-              communicationId
-            )}`}
-            className="investigation-primary-link"
-          >
-            Evidence Ledger
-            <ArrowRight size={14} />
-          </Link>
         </div>
       </section>
     </div>

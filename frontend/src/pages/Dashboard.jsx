@@ -274,7 +274,7 @@ export default function Dashboard() {
    * from the dashboard's five-investigation window.
    * It is NOT presented as all-time statistics.
    */
-
+  
   const recentRisk = useMemo(() => {
     const result = {
       high: 0,
@@ -410,53 +410,97 @@ export default function Dashboard() {
         </div>
 
         <div className="dashboard-platform-copy">
-          <span>SECURESENSE AI PLATFORM</span>
+          <span>Multi-Modal Explainable Trust Intelligence Platform</span>
 
           <h2>
             {platformOperational
-              ? "SecureSense AI Platform Operational"
+              ? "SecureSense AI Operational"
               : "Platform Attention Required"}
           </h2>
 
           <p>
-            Backend services, AI intelligence modules, and the Explainable Evidence Ledger are monitored in real time.
+            Continuous real-time telemetry across the complete investigation architecture, actively monitoring Multi-Modal Intelligence, Trust Verification Engines, and Evidence Ledgers.
           </p>
         </div>
 
         <div className="dashboard-service-statuses">
-          <span
-            className={
-              backendOnline
-                ? "dashboard-service-online"
-                : "dashboard-service-offline"
-            }
-          >
-            <span />
-            API
-          </span>
 
-          <span
-            className={
-              nlpOnline
-                ? "dashboard-service-online"
-                : "dashboard-service-offline"
-            }
-          >
-            <span />
-            NLP
-          </span>
+        <span
+        className={
+          backendOnline
+            ? "dashboard-service-online"
+            : "dashboard-service-offline"
+        }
+      >
+        <span />
+        CI
+      </span>
+      <span
+        className={
+          nlpOnline
+            ? "dashboard-service-online"
+            : "dashboard-service-offline"
+        }
+      >
+        <span />
+        MMI
+      </span>
 
-          <span
-            className={
-              ledgerOnline
-                ? "dashboard-service-online"
-                : "dashboard-service-offline"
-            }
-          >
-            <span />
-            EEL
-          </span>
-        </div>
+      <span
+        className={
+          backendOnline
+            ? "dashboard-service-online"
+            : "dashboard-service-offline"
+        }
+      >
+        <span />
+        TVE
+      </span>
+
+      <span
+        className={
+          backendOnline
+            ? "dashboard-service-online"
+            : "dashboard-service-offline"
+        }
+      >
+        <span />
+        TIE
+      </span>
+
+      <span
+        className={
+          backendOnline
+            ? "dashboard-service-online"
+            : "dashboard-service-offline"
+        }
+      >
+        <span />
+        FCP
+      </span>
+
+      <span
+        className={
+          backendOnline
+            ? "dashboard-service-online"
+            : "dashboard-service-offline"
+        }
+      >
+        <span />
+        STG
+      </span>
+
+      <span
+        className={
+          ledgerOnline
+            ? "dashboard-service-online"
+            : "dashboard-service-offline"
+        }
+      >
+        <span />
+        EEL
+      </span>
+    </div>
       </section>
 
       {error && (
@@ -500,151 +544,7 @@ export default function Dashboard() {
         />
       </section>
 
-      {/* ==================================================
-          LATEST INVESTIGATION
-      =================================================== */}
-
-      <section className="dashboard-section">
-        <div className="dashboard-section-heading">
-          <div>
-            <span>LATEST INVESTIGATION</span>
-            <h2>Latest Communication Investigation</h2>
-            <p>
-              Most recent completed communication assessment.
-            </p>
-          </div>
-
-          <Clock3 size={18} />
-        </div>
-
-        {!latestInvestigation ? (
-          <div className="dashboard-empty">
-            <FileSearch size={25} />
-
-            <strong>No investigations available</strong>
-
-            <span>
-              Upload a communication to begin security
-              analysis.
-            </span>
-
-            <Link to="/upload">
-              Start Investigation
-            </Link>
-          </div>
-        ) : (
-          <>
-            <div className="dashboard-latest-header">
-              <div>
-                <span>
-                  {latestInvestigation.file_type ||
-                    latestInvestigation.file_type ||
-                    "Communication"}
-                </span>
-
-                <h3>
-                  {latestInvestigation.filename ||
-                    "Pasted Communication"}
-                </h3>
-
-                <small>
-                  {latestInvestigation.communication_id}
-                  {" · "}
-                  {formatDate(
-                    latestInvestigation.uploaded_at
-                  )}
-                </small>
-              </div>
-
-              <div
-                className={`dashboard-risk-badge ${riskClass(
-                  latestInvestigation.risk_level
-                )}`}
-              >
-                {latestInvestigation.risk_level ||
-                  "Unknown"}{" "}
-                Risk
-              </div>
-            </div>
-
-            <div className="dashboard-assessment-grid">
-              <div>
-                <span>FINAL DECISION</span>
-                <strong>
-                  {latestFusion?.decision ||
-                    latestNlp?.label ||
-                    "Unknown"}
-                </strong>
-              </div>
-
-              <div>
-                <span>RISK SCORE</span>
-                <strong>
-                  {formatPercent(
-                    latestInvestigation.risk_score
-                  )}
-                </strong>
-              </div>
-
-              <div>
-                <span>CONFIDENCE</span>
-                <strong>
-                  {formatPercent(
-                    latestInvestigation.confidence
-                  )}
-                </strong>
-              </div>
-
-              <div>
-                <span>MODEL AGREEMENT</span>
-                <strong>
-                  {latestFusion?.agreement ||
-                    "N/A"}
-                </strong>
-              </div>
-            </div>
-
-            <div>
-              <span>EVIDENCE FUSION</span>
-
-              <strong>
-                {
-                  latestFusion?.override_applied
-                    ? "Applied"
-                    : "Not Applied"
-                }
-              </strong>
-            </div>
-
-            {latestInvestigation.summary && (
-              <div className="dashboard-latest-summary">
-                <ShieldCheck size={15} />
-
-                <div>
-                  <span>INVESTIGATION SUMMARY</span>
-
-                  <p>
-                    {latestInvestigation.summary}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            <div className="dashboard-latest-actions">
-              <Link
-                to={`/analysis/${encodeURIComponent(
-                  latestInvestigation.communication_id
-                )}`}
-              >
-                Open Full Investigation
-                <ArrowRight size={13} />
-              </Link>
-            </div>
-          </>
-        )}
-      </section>
-
-      {/* ==================================================
+{/* ==================================================
           INTELLIGENCE SNAPSHOT
       =================================================== */}
 
@@ -668,19 +568,11 @@ export default function Dashboard() {
               <div className="dashboard-intelligence-icon">
                 <Brain size={18} />
               </div>
-
               <span>NLP SECURITY</span>
-
-              <strong>
-                {latestNlp?.label ||
-                  "Not Available"}
-              </strong>
-
+              <strong>{latestNlp?.label || "Not Available"}</strong>
               <small>
                 {latestNlp
-                  ? `${formatPercent(
-                      latestNlp.confidence_percent
-                    )} confidence`
+                  ? `${formatPercent(latestNlp.confidence_percent)} confidence`
                   : "No NLP result"}
               </small>
             </article>
@@ -689,19 +581,11 @@ export default function Dashboard() {
               <div className="dashboard-intelligence-icon">
                 <Eye size={18} />
               </div>
-
               <span>VISUAL INTELLIGENCE</span>
-
-              <strong>
-                {latestVisual?.label ||
-                  "Not Available"}
-              </strong>
-
+              <strong>{latestVisual?.label || "Not Available"}</strong>
               <small>
                 {latestVisual
-                  ? `${formatPercent(
-                      latestVisual.confidence_percent
-                    )} confidence`
+                  ? `${formatPercent(latestVisual.confidence_percent)} confidence`
                   : "No visual result"}
               </small>
             </article>
@@ -710,68 +594,30 @@ export default function Dashboard() {
               <div className="dashboard-intelligence-icon">
                 <Activity size={18} />
               </div>
-
               <span>VOICE INTELLIGENCE</span>
-
               <strong>
-                {latestInvestigation?.voice?.voice_authenticity
-                  ?.prediction ||
-                  latestInvestigation?.voice?.prediction ||
-                  "Not Available"}
+                {latestInvestigation?.voice?.voice_authenticity?.prediction ||
+                 latestInvestigation?.voice?.prediction ||
+                 "Not Available"}
               </strong>
-
               <small>
                 {latestInvestigation?.voice
                   ? `${formatPercent(
-                      latestInvestigation.voice
-                        .voice_authenticity
-                        ?.confidence ??
-                      latestInvestigation.voice
-                        ?.confidence
+                      latestInvestigation.voice.voice_authenticity?.confidence ??
+                      latestInvestigation.voice?.confidence
                     )} confidence`
                   : "No voice result"}
               </small>
             </article>
-            <article>
-              <div className="dashboard-intelligence-icon">
-                <Brain size={18} />
-              </div>
 
-              <span>COMMUNICATION INTELLIGENCE</span>
-
-              <strong>
-                {
-                  latestInvestigation?.communication_intent
-                    ?.security_intent ||
-                  "Not Available"
-                }
-              </strong>
-
-              <small>
-                {
-                  latestInvestigation?.communication_intent
-                    ? `${latestInvestigation.communication_intent.context} • ${formatPercent(
-                        latestInvestigation.communication_intent.confidence
-                      )}`
-                    : "No communication intent"
-                }
-              </small>
-            </article>
             <article>
               <div className="dashboard-intelligence-icon">
                 <Globe2 size={18} />
               </div>
-
               <span>URL INTELLIGENCE</span>
-
-              <strong>
-                {latestUrls.length}
-              </strong>
-
+              <strong>{latestUrls.length}</strong>
               <small>
-                {latestUrls.length === 1
-                  ? "URL analysed"
-                  : "URLs analysed"}
+                {latestUrls.length === 1 ? "URL analysed" : "URLs analysed"}
               </small>
             </article>
 
@@ -779,22 +625,26 @@ export default function Dashboard() {
               <div className="dashboard-intelligence-icon">
                 <Database size={18} />
               </div>
-
               <span>EVIDENCE GENERATED</span>
-
-              <strong>
-                {latestEvidence?.evidence_ids
-                  ?.length ?? 0}
-              </strong>
-
-              <small>
-                Explainable evidence records
-              </small>
+              <strong>{latestEvidence?.evidence_ids?.length ?? 0}</strong>
+              <small>Explainable evidence records</small>
             </article>
+          </div> {/* <--- CLOSING GRID DIV HERE */}
+
+          {/* MOVED OUTSIDE THE GRID */}
+          <div className="dashboard-latest-actions">
+            <Link
+              to={`/analysis/${encodeURIComponent(
+                latestInvestigation.communication_id
+              )}`}
+            >
+              Open Full Investigation
+              <ArrowRight size={13} />
+            </Link>
           </div>
+          
         </section>
       )}
-
       {/* ==================================================
           RECENT RISK OVERVIEW
       =================================================== */}
@@ -849,45 +699,45 @@ export default function Dashboard() {
 
           <div className="dashboard-capability-list">
             <div>
-                <Upload size={15} />
-                <span>COMMUNICATION INGESTION</span>
-                <strong>ACTIVE</strong>
+              <Upload size={15} />
+              <span>COMMUNICATION INGESTION (CI)</span>
+              <strong>ACTIVE</strong>
             </div>
 
             <div>
-                <Brain size={15} />
-                <span>MULTI-MODAL INTELLIGENCE</span>
-                <strong>ACTIVE</strong>
+              <Brain size={15} />
+              <span>MULTI-MODAL INTELLIGENCE (MMI)</span>
+              <strong>ACTIVE</strong>
             </div>
 
             <div>
-                <ShieldCheck size={15} />
-                <span>TRUST VERIFICATION ENGINE</span>
-                <strong>ACTIVE</strong>
+              <ShieldCheck size={15} />
+              <span>TRUST VERIFICATION ENGINE (TVE)</span>
+              <strong>ACTIVE</strong>
             </div>
 
             <div>
-                <Network size={15} />
-                <span>TRUST INTELLIGENCE ENGINE</span>
-                <strong>ACTIVE</strong>
+              <Network size={15} />
+              <span>TRUST INTELLIGENCE ENGINE (TIE)</span>
+              <strong>ACTIVE</strong>
             </div>
 
             <div>
-                <Shield size={15} />
-                <span>FINANCIAL COMMUNICATION PASSPORT (FCP)</span>
-                <strong>GENERATED</strong>
+              <Shield size={15} />
+              <span>FINANCIAL COMMUNICATION PASSPORT (FCP)</span>
+              <strong>GENERATED</strong>
             </div>
 
             <div>
-                <Network size={15} />
-                <span>SECURITIES TRUST GRAPH (STG)</span>
-                <strong>INTEGRATED</strong>
+              <Network size={15} />
+              <span>SECURITIES TRUST GRAPH (STG)</span>
+              <strong>INTEGRATED</strong>
             </div>
 
             <div>
-                <Database size={15} />
-                <span>EXPLAINABLE EVIDENCE LEDGER (EEL)</span>
-                <strong>PERSISTENT</strong>
+              <Database size={15} />
+              <span>EXPLAINABLE EVIDENCE LEDGER (EEL)</span>
+              <strong>PERSISTENT</strong>
             </div>
           </div>
         </div>

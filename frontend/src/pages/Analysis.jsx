@@ -14,7 +14,6 @@ import {
   ChevronDown,
   ChevronUp,
   Clock3,
-  ExternalLink,
   Eye,
   FileSearch,
   Fingerprint,
@@ -354,10 +353,6 @@ function TechnicalEvidence({
       analysis.entities
     );
 
-  const findings =
-    asArray(
-      analysis.findings
-    );
 
   const aiManipulationFindings =
     asArray(
@@ -389,7 +384,6 @@ function TechnicalEvidence({
     entityGroups.length > 0 ||
     nlpProbabilities.length > 0 ||
     urls.length > 0 ||
-    findings.length > 0 ||
     aiManipulationFindings.length >
     0 ||
     explainableEvidence.length > 0 ||
@@ -1173,58 +1167,6 @@ function TechnicalEvidence({
             </div>
           )}
 
-
-          {/* ===============================================
-              Conditional Findings
-              =============================================== */}
-
-          {findings.length > 0 && (
-            <div className="technical-block">
-
-              <div className="technical-block-heading">
-                <AlertTriangle
-                  size={18}
-                />
-
-                <div>
-                  <span>
-                    SECURITY FINDINGS
-                  </span>
-
-                  <h3>
-                    Detected Findings
-                  </h3>
-                </div>
-              </div>
-
-
-              <div className="raw-finding-list">
-                {findings.map(
-                  (
-                    finding,
-                    index
-                  ) => (
-                    <pre
-                      key={index}
-                      className="raw-finding-card"
-                    >
-                      {typeof finding ===
-                        "string"
-                        ? finding
-                        : JSON.stringify(
-                          finding,
-                          null,
-                          2
-                        )}
-                    </pre>
-                  )
-                )}
-              </div>
-
-            </div>
-          )}
-
-
           {aiManipulationFindings.length >
             0 && (
               <div className="technical-block">
@@ -1533,28 +1475,15 @@ export default function Analysis() {
 
 
       const evidence =
-        analysis.evidence_references ||
-        analysis.evidence ||
-        passport?.evidence ||
-        {};
+  analysis.evidence_references ||
+  analysis.evidence ||
+  passport?.evidence ||
+{};
 
-
-      const evidenceIds =
-        asArray(
-          evidence?.evidence_ids
-        );
-
-
-      const ledgerIds =
-        asArray(
-          evidence?.ledger_ids
-        );
-
-
-      const modules =
-        asArray(
-          evidence?.modules
-        );
+const modules =
+  asArray(
+    evidence?.modules
+  );
 
 
       const decision =
@@ -1577,8 +1506,6 @@ export default function Analysis() {
         passport,
         stg,
         evidence,
-        evidenceIds,
-        ledgerIds,
         modules,
         decision,
       };
@@ -1705,8 +1632,6 @@ export default function Analysis() {
     qr,
     passport,
     stg,
-    evidenceIds,
-    ledgerIds,
     modules,
     decision,
   } = derived;
@@ -1722,12 +1647,6 @@ export default function Analysis() {
     statusClass(
       decision
     );
-
-
-  const verifiedSender =
-    passport?.verified_sender ===
-    true;
-
 
   const trustedHosting =
     fusion?.trusted_hosting_platform === true;
@@ -1999,27 +1918,6 @@ const recommendation =
 
 
         <MetricCard
-          icon={Fingerprint}
-          label="Sender"
-          value={
-            verifiedSender
-              ? "Verified"
-              : "Unverified"
-          }
-          detail={
-            passport?.verification
-              ?.status ||
-            "Verification unavailable"
-          }
-          tone={
-            verifiedSender
-              ? "safe"
-              : "warning"
-          }
-        />
-
-
-        <MetricCard
           icon={Network}
           label="Trust Graph"
           value={
@@ -2039,203 +1937,6 @@ const recommendation =
               : "neutral"
           }
         />
-
-      </section>
-
-
-      {/* ===================================================
-          Decision Intelligence
-          =================================================== */}
-
-      <section className="investigation-section">
-
-        <div className="investigation-section-heading">
-
-          <div>
-            <span>
-              TRUST INTELLIGENCE ENGINE
-            </span>
-
-            <h2>
-              Why SecureSense reached
-              this verdict
-            </h2>
-          </div>
-
-        </div>
-
-
-        <p className="investigation-summary">
-          {analysis.summary ||
-            fusion?.summary ||
-            "No security summary was available."}
-        </p>
-
-        {fusion?.trusted_hosting_platform && (
-    <div className="hosting-information-card">
-
-        <h4>Trusted Hosting Platform</h4>
-
-        <div className="hosting-grid">
-
-            <div>
-                <span>Infrastructure</span>
-                <strong>
-                    ✓ Trusted {fusion.hosting_provider}
-                </strong>
-            </div>
-
-            <div>
-                <span>Content</span>
-                <strong>
-                    ⚠ User-generated
-                </strong>
-            </div>
-
-            <div>
-                <span>Recommendation</span>
-                <strong>
-                    Verify the sender before submitting personal information, opening shared documents or completing forms.
-                </strong>
-            </div>
-
-        </div>
-
-    </div>
-)}
-
-
-        {fusion && (
-          <div className="fusion-details">
-
-            <div>
-              <span>
-                Fusion Decision
-              </span>
-
-              <strong>
-                {fusion.decision ||
-                  "Unknown"}
-              </strong>
-            </div>
-
-            <div>
-              <span>
-                Agreement
-              </span>
-
-              <strong>
-                {fusion.agreement ||
-                  "Unknown"}
-              </strong>
-            </div>
-
-
-            <div>
-              <span>
-                Dominant Intelligence
-              </span>
-
-              <strong>
-                {fusion.dominant_modality ||
-                  "None"}
-              </strong>
-            </div>
-
-
-            <div>
-              <span>
-                Fusion Risk
-              </span>
-              <strong>
-                {percent(
-                  fusion.risk_score
-                )}
-              </strong>
-            </div>
-
-            <div>
-              <span>
-                Communication Context
-              </span>
-              <strong>
-                {
-                  analysis?.communication_intent
-                    ?.context ??
-                  "Unknown"
-                }
-              </strong>
-            </div>
-
-            <div>
-              <span>
-                Evidence Consensus
-              </span>
-              <strong>
-                {
-                  fusion?.override_applied
-                    ? "Applied"
-                    : "Not Applied"
-                }
-              </strong>
-            </div>
-
-            <div>
-              <span>
-                Voice Authenticity
-              </span>
-              <strong>
-                {
-                  fusion?.voice_summary ??
-                  "Not Available"
-                }
-              </strong>
-            </div>
-
-            {
-              analysis?.communication_intent?.evidence?.length > 0 && (
-                <div className="technical-block" style={{ gridColumn: "1 / -1", marginTop: "1rem" }}>
-                  <div className="technical-block-heading">
-                    <Workflow size={18} />
-                    <div>
-                      <span>COMMUNICATION INTELLIGENCE</span>
-                      <h3>Semantic Analysis</h3>
-                      <div className="technical-model">
-                        <span>Semantic Model</span>
-                        <strong>SentenceTransformer (all-MiniLM-L6-v2)</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="technical-stat-grid" style={{ marginBottom: "1.5rem" }}>
-                    <div>
-                      <span>Detected Context</span>
-                      <strong>{analysis?.communication_intent?.context || "Unknown"}</strong>
-                    </div>
-                    <div>
-                      <span>Security Intent</span>
-                      <strong>{analysis?.communication_intent?.security_intent || "Unknown"}</strong>
-                    </div>
-                  </div>
-
-                  <div className="technical-block-heading">
-                    <div>
-                      <h3>Evidence Used</h3>
-                    </div>
-                  </div>
-
-                  <div className="entity-chip-list">
-                    {analysis.communication_intent.evidence.map((item, index) => (
-                      <span key={index} className="entity-chip">
-                        {item.description}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )
-            }
-          </div>
-        )}
 
       </section>
 
@@ -2405,19 +2106,6 @@ const recommendation =
                 : null
             }
             unavailableText="No analysed URLs were detected in this communication."
-          />
-
-
-          <ModuleCard
-            icon={Workflow}
-            title="Communication Intent Intelligence (CII)"
-            subtitle="Semantic Intelligence • all-MiniLM-L6-v2"
-            status={analysis?.communication_intent?.context}
-            intent={analysis?.communication_intent?.security_intent}
-            confidence={analysis?.communication_intent?.confidence ?? null}
-            risk={analysis?.communication_intent?.risk_score ?? null}
-            latency={null}
-            unavailableText="Communication Intent Intelligence unavailable."
           />
 
         </div>
@@ -2600,419 +2288,144 @@ const recommendation =
 
 
       {/* ===================================================
-          STG + FCP
-          =================================================== */}
+    Trust Intelligence Destinations
+    =================================================== */}
 
-      <section className="trust-passport-grid">
+<section className="trust-destinations-grid">
 
+  {/* =================================================
+      Securities Trust Graph
+      ================================================= */}
 
-        <div className="investigation-section trust-card">
+  <div className="investigation-section trust-destination-card">
 
-          <div className="investigation-section-heading">
+    <div className="investigation-section-heading">
 
-            <div>
+      <div>
 
-              <span>
-                TRUST INTELLIGENCE
-              </span>
+        <span>
+          TRUST INTELLIGENCE
+        </span>
 
-              <h2>
-                Securities Trust Graph (STG)
-              </h2>
+        <h2>
+          Securities Trust Graph (STG)
+        </h2>
 
-            </div>
+      </div>
 
-            <Network size={22} />
+      <Network size={22} />
 
-          </div>
+    </div>
 
+    <p className="context-note">
+      Explore entity relationships, reputation signals,
+      and historical trust intelligence associated with
+      this investigation.
+    </p>
 
-          <div className="trust-detail-list">
+    <Link
+      className="investigation-secondary-link"
+      to={`/trust-graph/${encodeURIComponent(
+        analysis.communication_id ||
+        communicationId
+      )}`}
+    >
+      Explore Trust Graph
 
-            <div>
-              <span>
-                Classification
-              </span>
+      <ArrowRight size={16} />
+    </Link>
 
-              <strong>
-                {stg?.classification ||
-                  "Unknown"}
-              </strong>
-            </div>
+  </div>
 
 
-            <div>
-              <span>
-                Reputation Available
-              </span>
+  {/* =================================================
+      Financial Communication Passport
+      ================================================= */}
 
-              <strong>
-                {stg
-                  ?.reputation_available
-                  ? "Yes"
-                  : "No"}
-              </strong>
-            </div>
+  <div className="investigation-section trust-destination-card">
 
+    <div className="investigation-section-heading">
 
-            <div>
-              <span>
-                Entities Analysed
-              </span>
+      <div>
 
-              <strong>
-                {stg
-                  ?.entities_analysed ??
-                  0}
-              </strong>
-            </div>
+        <span>
+          TRUST PROFILE
+        </span>
 
+        <h2>
+          Financial Communication Passport (FCP)
+        </h2>
 
-            <div>
-              <span>
-                Graph Risk
-              </span>
+      </div>
 
-              <strong>
-                {stg?.graph_risk_score !=
-                  null
-                  ? score(
-                    stg.graph_risk_score
-                  )
-                  : "N/A"}
-              </strong>
-            </div>
+      <Fingerprint size={22} />
 
-          </div>
+    </div>
 
+    <p className="context-note">
+      View the complete trust and authenticity profile
+      generated for this communication.
+    </p>
 
-          <p className="context-note">
-            {stg?.summary ||
-              "No historical trust context is available for this communication."}
-          </p>
+    <Link
+      className="investigation-secondary-link"
+      to={`/passport/${encodeURIComponent(
+        analysis.communication_id ||
+        communicationId
+      )}`}
+    >
+      Open Full Passport
 
+      <ArrowRight size={16} />
+    </Link>
 
-          <Link
-            className="investigation-secondary-link"
-            to={`/trust-graph/${encodeURIComponent(
-              analysis.communication_id ||
-              communicationId
-            )}`}
-          >
-            Explore Trust Graph
+  </div>
 
-            <ArrowRight size={16} />
-          </Link>
 
-        </div>
+  {/* =================================================
+      Explainable Evidence Ledger
+      ================================================= */}
 
+  <div className="investigation-section trust-destination-card">
 
-        <div className="investigation-section passport-card">
+    <div className="investigation-section-heading">
 
-          <div className="investigation-section-heading">
+      <div>
 
-            <div>
+        <span>
+          AUDITABILITY
+        </span>
 
-              <span>
-                TRUST PROFILE
-              </span>
+        <h2>
+          Explainable Evidence Ledger (EEL)
+        </h2>
 
-              <h2>
-                Financial Communication Passport (FCP)
-              </h2>
+      </div>
 
-            </div>
+      <ShieldCheck size={22} />
 
-            <Fingerprint size={22} />
+    </div>
 
-          </div>
+    <p className="context-note">
+      Inspect the evidence references and investigation
+      trail supporting this security assessment.
+    </p>
 
+    <Link
+      className="investigation-secondary-link"
+      to={`/ledger/${encodeURIComponent(
+        analysis.communication_id ||
+        communicationId
+      )}`}
+    >
+      Inspect Evidence Ledger
 
-          {passport ? (
-            <>
+      <ArrowRight size={16} />
+    </Link>
 
-              <div className="passport-id">
-                {passport.passport_id ||
-                  "Passport Generated"}
-              </div>
+  </div>
 
-
-              <div className="trust-detail-list">
-
-                <div>
-                  <span>
-                    Claimed Sender
-                  </span>
-
-                  <strong>
-                    {passport
-                      .claimed_sender ||
-                      "Unknown"}
-                  </strong>
-                </div>
-
-
-                <div>
-                  <span>
-                    Sender Status
-                  </span>
-
-                  <strong>
-                    {passport
-                      .verified_sender
-                      ? "Verified"
-                      : "Unverified"}
-                  </strong>
-                </div>
-
-
-                <div>
-                  <span>
-                    Verification
-                  </span>
-
-                  <strong>
-                    {passport
-                      .verification
-                      ?.status ||
-                      "Unknown"}
-                  </strong>
-                </div>
-                {
-                  passport?.verification?.official_provider && (
-
-                    <div>
-
-                      <span>
-                        Official Provider
-                      </span>
-
-                      <strong>
-                        {passport.verification.official_provider}
-                      </strong>
-
-                    </div>
-
-                  )
-                }
-
-                {
-                  passport?.verification?.registered_domain && (
-
-                    <div>
-
-                      <span>
-                        Registered Domain
-                      </span>
-
-                      <strong>
-                        {passport.verification.registered_domain}
-                      </strong>
-
-                    </div>
-
-                  )
-                }
-
-                <div>
-                  <span>
-                    Threats
-                  </span>
-
-                  <strong>
-                    {passport
-                      .threat_categories
-                      ?.length
-                      ? passport
-                        .threat_categories
-                        .join(", ")
-                      : "None identified"}
-                  </strong>
-                </div>
-
-              </div>
-
-
-              <Link
-                className="investigation-secondary-link"
-                to={`/passport/${encodeURIComponent(
-                  analysis.communication_id ||
-                  communicationId
-                )}`}
-              >
-                Open Full Passport
-
-                <ArrowRight size={16} />
-              </Link>
-
-            </>
-          ) : (
-
-            <div className="module-unavailable">
-
-              <ShieldQuestion
-                size={18}
-              />
-
-              <span>
-                No Financial
-                Communication Passport
-                snapshot is available.
-              </span>
-
-            </div>
-
-          )}
-
-        </div>
-
-      </section>
-
-
-      {/* ===================================================
-          Explainable Evidence Ledger
-          =================================================== */}
-
-      <section className="investigation-section">
-
-        <div className="investigation-section-heading">
-
-          <div>
-
-            <span>
-              AUDITABILITY
-            </span>
-
-            <h2>
-              Explainable Evidence Ledger (EEL)
-            </h2>
-
-          </div>
-
-          <ShieldCheck size={22} />
-
-        </div>
-
-
-        <div className="evidence-overview">
-
-          <div>
-            <strong>
-              {evidenceIds.length}
-            </strong>
-
-            <span>
-              Evidence Records
-            </span>
-          </div>
-
-
-          <div>
-            <strong>
-              {ledgerIds.length}
-            </strong>
-
-            <span>
-              Ledger Entries
-            </span>
-          </div>
-
-
-          <div>
-            <strong>
-              {modules.length}
-            </strong>
-
-            <span>
-              Evidence Modules
-            </span>
-          </div>
-
-        </div>
-
-
-        {ledgerIds.length > 0 ? (
-
-          <div className="evidence-reference-list">
-
-            {ledgerIds.map(
-              (
-                ledgerId,
-                index
-              ) => (
-
-                <div
-                  className="evidence-reference-row"
-                  key={ledgerId}
-                >
-
-                  <div className="evidence-check">
-                    <CheckCircle2
-                      size={17}
-                    />
-                  </div>
-
-
-                  <div>
-
-                    <strong>
-                      {modules[index] ||
-                        "Security Evidence"}
-                    </strong>
-
-                    <span>
-                      {evidenceIds[
-                        index
-                      ] ||
-                        "Evidence reference unavailable"}
-                    </span>
-
-                  </div>
-
-
-                  <code>
-                    {ledgerId}
-                  </code>
-
-                </div>
-
-              )
-            )}
-
-          </div>
-
-        ) : (
-
-          <div className="module-unavailable">
-
-            <ShieldQuestion
-              size={18}
-            />
-
-            <span>
-              No persisted explainable
-              evidence references are
-              available.
-            </span>
-
-          </div>
-
-        )}
-
-
-        <Link
-          className="investigation-secondary-link"
-          to={`/ledger/${encodeURIComponent(
-            analysis.communication_id ||
-            communicationId
-          )}`}
-        >
-          Inspect Evidence Ledger
-
-          <ExternalLink size={15} />
-        </Link>
-
-      </section>
+</section>
 
     </div>
   );

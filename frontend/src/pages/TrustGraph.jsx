@@ -198,15 +198,14 @@ function EmptyGraph({
         <div className="stg-empty-line stg-empty-line-right" />
       </div>
 
-      <h3>No relationship-derived context discovered</h3>
+      <h3>
+  No graph relationships available
+</h3>
 
-      <p>
-
-The communication was successfully analysed,
-however no historical relationships were found
-between the extracted entities in the
-Securities Trust Graph.
-
+<p>
+  The communication was successfully analysed,
+  but no entity relationships were returned
+  for this Securities Trust Graph snapshot.
 </p>
 
       <div className="stg-empty-meta">
@@ -226,67 +225,387 @@ Securities Trust Graph.
     </div>
   );
 }
+/* =========================================================
+   Visual Trust Graph
+   ========================================================= */
 
-
-function RelationshipContextCard({
-  context,
-  index,
+function TrustGraphCanvas({
+  nodes,
+  edges,
 }) {
-  const entries = Object.entries(
-    context || {}
+  const safeNodes = Array.isArray(nodes)
+    ? nodes
+    : [];
+
+  const safeEdges = Array.isArray(edges)
+    ? edges
+    : [];
+
+  if (
+    safeNodes.length === 0 ||
+    safeEdges.length === 0
+  ) {
+    return null;
+  }
+
+  const width = 1000;
+  const height = 430;
+
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  /*
+   * Deterministic circular layout.
+   * This keeps the graph stable between renders
+   * without requiring another graph library.
+   */
+  const positionedNodes = safeNodes.map(
+    (node, index) => {
+      const angle =
+        (2 * Math.PI * index) /
+        Math.max(safeNodes.length, 1);
+
+      const radius =
+        safeNodes.length <= 2
+          ? 210
+          : Math.min(
+              175,
+              80 + safeNodes.length * 16
+            );
+
+      return {
+        ...node,
+        x:
+          centerX +
+          Math.cos(angle) * radius,
+
+        y:
+          centerY +
+          Math.sin(angle) * radius,
+      };
+    }
   );
 
+  const nodeMap = new Map(
+    positionedNodes.map((node) => [
+      node.node_id,
+      node,
+    ])
+  );
+
+  const getNodeLabel = (node) => {
+    if (!node) {
+      return "Unknown";
+    }
+
+    return (
+      node.display_name ||
+      node.value ||
+      node.node_type ||
+      "Entity"
+    );
+  };
+
+  const getNodeType = (node) => {
+    if (!node) {
+      return "ENTITY";
+    }
+
+    return String(
+      node.node_type ||
+      "ENTITY"
+    ).toUpperCase();
+  };
+
+  const getNodeTone = (node) => {
+    const type = String(
+      node?.node_type || ""
+    ).toLowerCase();
+
+    if (
+      type.includes("url") ||
+      type.includes("domain")
+    ) {
+      return "url";
+    }
+
+    if (
+      type.includes("qr") ||
+      type.includes("phone") ||
+      type.includes("email")
+    ) {
+      return "identity";
+    }
+
+    if (
+      type.includes("communication") ||
+      type.includes("document")
+    ) {
+      return "communication";
+    }
+
+    return "entity";
+  };
+
   return (
-    <div className="stg-context-card">
-      <div className="stg-context-header">
-        <div className="stg-context-number">
-          {index + 1}
-        </div>
+    <div className="stg-visual-graph">
 
-        <div>
-          <span className="stg-eyebrow">
-            RELATIONSHIP CONTEXT
-          </span>
+      <svg
+        className="stg-visual-graph-svg"
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        aria-label="Securities Trust Graph entity relationship visualization"
+      >
 
-          <h3>
-            Observed Graph Relationship
-          </h3>
-        </div>
+        <defs>
+
+          <marker
+            id="stg-arrow"
+            viewBox="0 0 10 10"
+            refX="9"
+            refY="5"
+            markerWidth="6"
+            markerHeight="6"
+            orient="auto-start-reverse"
+          >
+            <path
+              d="M 0 0 L 10 5 L 0 10 z"
+              className="stg-edge-arrow"
+            />
+          </marker>
+
+          <filter
+            id="stg-node-shadow"
+            x="-30%"
+            y="-30%"
+            width="160%"
+            height="160%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="3"
+              stdDeviation="4"
+              floodOpacity="0.12"
+            />
+          </filter>
+
+        </defs>
+
+
+        {/* =================================================
+            Edges
+            ================================================= */}
+
+        <g className="stg-visual-edges">
+
+          {safeEdges.map((edge) => {
+
+            const source =
+              nodeMap.get(
+                edge.source_node_id
+              );
+
+            const target =
+              nodeMap.get(
+                edge.target_node_id
+              );
+
+            if (!source || !target) {
+              return null;
+            }
+
+            const dx =
+              target.x - source.x;
+
+            const dy =
+              target.y - source.y;
+
+            const length =
+              Math.sqrt(
+                dx * dx +
+                dy * dy
+              ) || 1;
+
+            /*
+             * Keep relationship labels
+             * away from the node borders.
+             */
+            const offset = 52;
+
+            const startX =
+              source.x +
+              (dx / length) *
+                offset;
+
+            const startY =
+              source.y +
+              (dy / length) *
+                offset;
+
+            const endX =
+              target.x -
+              (dx / length) *
+                offset;
+
+            const endY =
+              target.y -
+              (dy / length) *
+                offset;
+
+            const labelX =
+              (startX + endX) / 2;
+
+            const labelY =
+              (startY + endY) / 2;
+
+            return (
+              <g
+                key={edge.edge_id}
+                className="stg-visual-edge"
+              >
+
+                <line
+                  x1={startX}
+                  y1={startY}
+                  x2={endX}
+                  y2={endY}
+                  markerEnd="url(#stg-arrow)"
+                />
+
+                <g
+                  transform={`translate(${labelX}, ${labelY})`}
+                >
+
+                  <rect
+                    x="-48"
+                    y="-10"
+                    width="96"
+                    height="20"
+                    rx="10"
+                    className="stg-edge-label-bg"
+                  />
+
+                  <text
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    className="stg-edge-label"
+                  >
+                    {String(
+                      edge.relationship ||
+                      "RELATED"
+                    ).replace(/_/g, " ")}
+                  </text>
+
+                </g>
+
+              </g>
+            );
+          })}
+
+        </g>
+
+
+        {/* =================================================
+            Nodes
+            ================================================= */}
+
+        <g className="stg-visual-nodes">
+
+          {positionedNodes.map(
+            (node) => {
+
+              const tone =
+                getNodeTone(node);
+
+              const label =
+                getNodeLabel(node);
+
+              const type =
+                getNodeType(node);
+
+              const shortLabel =
+                label.length > 28
+                  ? `${label.slice(
+                      0,
+                      25
+                    )}...`
+                  : label;
+
+              return (
+                <g
+                  key={node.node_id}
+                  className={`stg-visual-node stg-node-${tone}`}
+                  transform={`translate(${node.x}, ${node.y})`}
+                >
+
+                  <circle
+                    r="45"
+                    className="stg-node-circle"
+                    filter="url(#stg-node-shadow)"
+                  />
+
+                  <circle
+                    r="36"
+                    className="stg-node-inner"
+                  />
+
+                  <text
+                    y="-5"
+                    textAnchor="middle"
+                    className="stg-node-type"
+                  >
+                    {type}
+                  </text>
+
+                  <text
+                    y="11"
+                    textAnchor="middle"
+                    className="stg-node-label"
+                  >
+                    {shortLabel}
+                  </text>
+
+                </g>
+              );
+            }
+          )}
+
+        </g>
+
+      </svg>
+
+
+      {/* ===================================================
+          Graph Legend
+          =================================================== */}
+
+      <div className="stg-graph-legend">
+
+        <span>
+          <i className="stg-legend-dot stg-legend-communication" />
+          Communication
+        </span>
+
+        <span>
+          <i className="stg-legend-dot stg-legend-url" />
+          URL / Domain
+        </span>
+
+        <span>
+          <i className="stg-legend-dot stg-legend-identity" />
+          Identity
+        </span>
+
+        <span>
+          <i className="stg-legend-dot stg-legend-entity" />
+          Entity
+        </span>
+
       </div>
 
-      <div className="stg-context-grid">
-        {entries.length > 0 ? (
-          entries.map(([key, value]) => (
-            <div
-              className="stg-context-field"
-              key={key}
-            >
-              <span>
-                {key
-                  .replace(/_/g, " ")
-                  .replace(/\b\w/g, (letter) =>
-                    letter.toUpperCase()
-                  )}
-              </span>
-
-              <strong>
-                {typeof value === "object"
-                  ? JSON.stringify(value)
-                  : String(value)}
-              </strong>
-            </div>
-          ))
-        ) : (
-          <p>
-            No relationship properties were
-            supplied.
-          </p>
-        )}
-      </div>
     </div>
   );
 }
-
 
 /* =========================================================
    Page
@@ -502,6 +821,16 @@ export default function TrustGraph() {
       ? relationship.contexts
       : [];
 
+  const graphNodes =
+  Array.isArray(stg.nodes)
+    ? stg.nodes
+    : [];
+
+const graphEdges =
+  Array.isArray(stg.edges)
+    ? stg.edges
+    : [];
+
   const evidenceIds =
     Array.isArray(stg.evidence_ids)
       ? stg.evidence_ids
@@ -533,8 +862,8 @@ export default function TrustGraph() {
     relationship.total_signals ?? 0;
 
   const graphHasRelationships =
-    contexts.length > 0 ||
-    relationshipSignals > 0;
+  graphNodes.length > 0 &&
+  graphEdges.length > 0;
 
   const classification =
     stg.classification || "Unknown";
@@ -664,36 +993,8 @@ export default function TrustGraph() {
               )}
             </strong>
           </div>
-
-          <div>
-            <span>Confidence</span>
-            <strong>
-              {formatScore(stg.confidence)}%
-            </strong>
-          </div>
         </div>
       </section>
-
-
-      {/* ===================================================
-          Context Notice
-      =================================================== */}
-
-      <section className="stg-context-notice">
-        <Shield size={16} />
-
-        <div>
-          <strong>
-            Historical context, not sender authentication
-          </strong>
-
-          <p>
-            {stg.contextual_role ||
-              "Historical entity context does not authenticate the sender and does not override communication-level security analysis."}
-          </p>
-        </div>
-      </section>
-
 
       {/* ===================================================
           Metrics
@@ -749,94 +1050,6 @@ export default function TrustGraph() {
 
 
       {/* ===================================================
-          Communication vs Graph
-      =================================================== */}
-
-      <section className="stg-section-card">
-        <div className="stg-section-heading">
-          <div>
-            <span className="stg-eyebrow">
-              TRUST VERIFICATION
-            </span>
-
-            <h2>
-              Communication vs Historical Context
-            </h2>
-          </div>
-
-          <BrainCircuit size={18} />
-        </div>
-
-        <div className="stg-comparison-grid">
-          <div className="stg-comparison-card">
-            <span>
-              Communication-Level Assessment
-            </span>
-
-            <div className="stg-comparison-value">
-
-    <strong>
-        {communicationRiskLevel}
-    </strong>
-
-    <div className="stg-comparison-details">
-
-        <small>
-            Risk&nbsp;
-            {formatScore(
-                communicationRisk
-            )}
-        </small>
-
-        <small>
-            Confidence&nbsp;
-            {formatScore(
-                communication?.confidence
-            )}%
-        </small>
-
-    </div>
-
-</div>
-
-            <p>
-              Produced by the current
-              communication security pipeline.
-            </p>
-          </div>
-
-          <div className="stg-comparison-divider">
-            <Link2 size={20} />
-          </div>
-
-          <div className="stg-comparison-card">
-            <span>
-              Historical Graph Assessment
-            </span>
-
-            <div className="stg-comparison-value">
-              <strong>
-                {classification}
-              </strong>
-
-              <small>
-                Trust{" "}
-                {formatScore(
-                  stg.graph_trust_score
-                )}
-              </small>
-            </div>
-
-            <p>
-              Derived only from available
-              historical entity relationships.
-            </p>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ===================================================
           Graph Visualization
       =================================================== */}
 
@@ -864,12 +1077,12 @@ export default function TrustGraph() {
           </span>
 
           <span>
-            <strong>
-              {relationship.contexts_available ??
-                contexts.length}
-            </strong>{" "}
-            relationship contexts
-          </span>
+  <strong>
+    {relationship.contexts_analysed ??
+      contexts.length}
+  </strong>{" "}
+  relationship contexts
+</span>
 
           <span>
             <strong>
@@ -880,27 +1093,24 @@ export default function TrustGraph() {
         </div>
 
         {!graphHasRelationships ? (
-          <EmptyGraph
-            communicationId={
-              communicationId
-            }
-            classification={
-              classification
-            }
-          />
-        ) : (
-          <div className="stg-context-list">
-            {contexts.map(
-              (context, index) => (
-                <RelationshipContextCard
-                  key={`context-${index}`}
-                  context={context}
-                  index={index}
-                />
-              )
-            )}
-          </div>
-        )}
+  <EmptyGraph
+    communicationId={
+      communicationId
+    }
+    classification={
+      classification
+    }
+  />
+) : (
+  <>
+
+    <TrustGraphCanvas
+      nodes={graphNodes}
+      edges={graphEdges}
+    />
+
+  </>
+)}
 
         {relationship.summary && (
           <div className="stg-graph-summary">
@@ -979,15 +1189,6 @@ export default function TrustGraph() {
             <strong>
               {formatScore(
                 stg.graph_trust_score
-              )}
-            </strong>
-          </div>
-
-          <div className="stg-assessment-item">
-            <span>Graph Confidence</span>
-            <strong>
-              {formatScore(
-                stg.confidence
               )}
             </strong>
           </div>
@@ -1112,14 +1313,6 @@ export default function TrustGraph() {
                 )
               )}
             </div>
-          </div>
-        )}
-
-        {relationship.contextual_role && (
-          <div className="stg-provenance-note">
-            <Shield size={14} />
-
-            {relationship.contextual_role}
           </div>
         )}
       </section>
