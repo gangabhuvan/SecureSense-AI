@@ -4,22 +4,31 @@ auth.py
 Authentication API for SecureSense AI.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+)
 from sqlalchemy.orm import Session
 
 from app.core.auth import (
     create_access_token,
+    create_refresh_token,
+    decode_refresh_token,
     get_current_user,
 )
 from app.database.database import get_db
 from app.database.models import User
 from app.schemas.auth import (
+    RefreshTokenRequest,
     Token,
     UserLogin,
     UserRegister,
     UserResponse,
 )
 from app.services.auth_service import auth_service
+
 
 router = APIRouter(
     prefix="/auth",
@@ -46,7 +55,10 @@ def register(
     """
 
     # Username already exists
-    if auth_service.get_user(db, request.username):
+    if auth_service.get_user(
+        db,
+        request.username,
+    ):
 
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -54,7 +66,10 @@ def register(
         )
 
     # Email already exists
-    if auth_service.get_user_by_email(db, request.email):
+    if auth_service.get_user_by_email(
+        db,
+        request.email,
+    ):
 
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -85,7 +100,7 @@ def login(
     db: Session = Depends(get_db),
 ):
     """
-    Authenticate a user and return a JWT access token.
+    Authenticate a user and return access and refresh tokens.
     """
 
     user = auth_service.authenticate(
@@ -101,7 +116,21 @@ def login(
             detail="Invalid username or password.",
         )
 
+    # ------------------------------------------------------
+    # Short-lived access token
+    # ------------------------------------------------------
+
     access_token = create_access_token(
+        {
+            "sub": user.username
+        }
+    )
+
+    # ------------------------------------------------------
+    # Long-lived refresh token
+    # ------------------------------------------------------
+
+    refresh_token = create_refresh_token(
         {
             "sub": user.username
         }
@@ -109,6 +138,77 @@ def login(
 
     return Token(
         access_token=access_token,
+        refresh_token=refresh_token,
+        token_type="bearer",
+    )
+
+
+# ==========================================================
+# Refresh Access Token
+# ==========================================================
+
+@router.post(
+    "/refresh",
+    response_model=Token,
+    summary="Refresh access token",
+)
+def refresh_access_token(
+    request: RefreshTokenRequest,
+    db: Session = Depends(get_db),
+):
+    """
+    Generate a new access token using a valid refresh token.
+    """
+
+    payload = decode_refresh_token(
+        request.refresh_token
+    )
+
+    username = payload.get("sub")
+
+    if username is None:
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid refresh token.",
+        )
+
+    user = (
+        db.query(User)
+        .filter(
+            User.username == username
+        )
+        .first()
+    )
+
+    if user is None:
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found.",
+        )
+
+    if not user.is_active:
+
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User account is inactive.",
+        )
+
+    # Create a new short-lived access token.
+    access_token = create_access_token(
+        {
+            "sub": user.username
+        }
+    )
+
+    # Keep the existing refresh token.
+    #
+    # Its original expiration remains unchanged because
+    # the token itself contains its own "exp" claim.
+    return Token(
+        access_token=access_token,
+        refresh_token=request.refresh_token,
         token_type="bearer",
     )
 
@@ -123,7 +223,9 @@ def login(
     summary="Get current authenticated user",
 )
 def get_current_user_profile(
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
     """
     Return the currently authenticated user.

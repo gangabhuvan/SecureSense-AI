@@ -73,10 +73,28 @@ class UserLogin(BaseModel):
 class Token(BaseModel):
     """
     JWT authentication response.
+
+    Returns both a short-lived access token and
+    a longer-lived refresh token.
     """
 
     access_token: str
+
+    refresh_token: str
+
     token_type: str = "bearer"
+
+
+# ==========================================================
+# Refresh Token Request
+# ==========================================================
+
+class RefreshTokenRequest(BaseModel):
+    """
+    Request used to obtain a new access token.
+    """
+
+    refresh_token: str
 
 
 # ==========================================================
@@ -101,8 +119,11 @@ class UserResponse(BaseModel):
     """
 
     id: int
+
     username: str
+
     email: EmailStr
+
     is_active: bool
 
     model_config = ConfigDict(

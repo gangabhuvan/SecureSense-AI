@@ -556,7 +556,7 @@ export default function Upload() {
                             />
 
                             <div>
-                                <h3>SecureSense is investigating</h3>
+                                <h3>SecureSense AI is investigating</h3>
                                 <p>
                                     Do not close this page while the
                                     communication is being analyzed.
