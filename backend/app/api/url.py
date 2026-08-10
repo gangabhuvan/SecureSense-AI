@@ -331,7 +331,7 @@ def analyse_url(
         )
 
         passport.verification.official_provider = (
-            domain_info["provider"]
+            domain_info["official_provider"]
         )
 
         passport.verification.registered_domain = (
