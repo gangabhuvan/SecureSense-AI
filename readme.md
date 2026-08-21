@@ -16,14 +16,6 @@ SecureSense AI is a Multi-Modal Explainable Trust Intelligence Platform that inv
 
 ---
 
-### 🚀 Built for the SEBI Hackathon
-
-*Protecting the securities market through explainable AI, trust intelligence, and multi-modal communication investigation.*
-
-</div>
-
----
-
 # 🌍 Overview
 
 Financial fraud is no longer limited to suspicious emails or fake websites.
